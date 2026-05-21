@@ -5,8 +5,6 @@ from django.utils import timezone
 from .models import User, SafetyInfo, TrustedContact, Pet, OTPVerification, BlacklistedToken
 
 
-# ─── Nested Serializers ────────────────────────────────────────────────────────
-
 class SafetyInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = SafetyInfo
@@ -27,8 +25,7 @@ class PetSerializer(serializers.ModelSerializer):
         read_only_fields = ['id', 'created_at', 'updated_at']
 
 
-# ─── Profile Serializer (read) ─────────────────────────────────────────────────
-
+# Read-only; returns the full user profile with nested safety info, contacts, and pets
 class UserProfileSerializer(serializers.ModelSerializer):
     safety_info = SafetyInfoSerializer(read_only=True)
     trusted_contacts = TrustedContactSerializer(many=True, read_only=True)
@@ -41,22 +38,13 @@ class UserProfileSerializer(serializers.ModelSerializer):
         read_only_fields = fields
 
 
-# ─── Signup ────────────────────────────────────────────────────────────────────
-
 class SignupSerializer(serializers.Serializer):
-    # Personal info
     name = serializers.CharField(max_length=255)
     email = serializers.EmailField()
     phone_number = serializers.CharField(max_length=20)
     password = serializers.CharField(min_length=4, write_only=True)
-
-    # Safety info
     safety_info = SafetyInfoSerializer()
-
-    # Trusted contacts (min 1, max 5)
     trusted_contacts = TrustedContactSerializer(many=True)
-
-    # Pets (optional, max 5)
     pets = PetSerializer(many=True, required=False, default=list)
 
     def validate_email(self, value):
@@ -82,8 +70,6 @@ class SignupSerializer(serializers.Serializer):
         return value
 
 
-# ─── Signin ────────────────────────────────────────────────────────────────────
-
 class SigninSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True)
@@ -92,6 +78,7 @@ class SigninSerializer(serializers.Serializer):
         email = data.get('email')
         password = data.get('password')
 
+        # Generic error message to avoid revealing whether the email exists
         try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:
@@ -107,19 +94,13 @@ class SigninSerializer(serializers.Serializer):
         return data
 
 
-# ─── Logout ────────────────────────────────────────────────────────────────────
-
 class LogoutSerializer(serializers.Serializer):
     refresh_token = serializers.CharField()
 
 
-# ─── Token Refresh ─────────────────────────────────────────────────────────────
-
 class TokenRefreshSerializer(serializers.Serializer):
     refresh_token = serializers.CharField()
 
-
-# ─── Change Password ───────────────────────────────────────────────────────────
 
 class ChangePasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField(write_only=True)
@@ -133,8 +114,6 @@ class ChangePasswordSerializer(serializers.Serializer):
             raise serializers.ValidationError('New password must differ from the old password.')
         return data
 
-
-# ─── Forgot Password ───────────────────────────────────────────────────────────
 
 class ForgotPasswordSerializer(serializers.Serializer):
     email = serializers.EmailField()
@@ -159,8 +138,6 @@ class ResetPasswordSerializer(serializers.Serializer):
             raise serializers.ValidationError('Passwords do not match.')
         return data
 
-
-# ─── Profile Update ────────────────────────────────────────────────────────────
 
 class ProfileUpdateSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=255, required=False)

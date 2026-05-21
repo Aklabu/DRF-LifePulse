@@ -7,6 +7,7 @@ from datetime import timedelta
 from .managers import UserManager
 
 
+# Custom user model using email as the unique identifier
 class User(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=255)
@@ -30,6 +31,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.email
 
 
+# Safety-related information for users living alone or temporarily alone
 class SafetyInfo(models.Model):
     LIVING_STATUS_CHOICES = [
         ('living_alone', 'Living Alone'),
@@ -41,6 +43,7 @@ class SafetyInfo(models.Model):
     living_status = models.CharField(max_length=20, choices=LIVING_STATUS_CHOICES)
     home_address = models.TextField()
     access_notes = models.TextField(blank=True, default='')
+    # Used to trigger alerts if the user misses a daily check-in
     check_in_time = models.TimeField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -52,6 +55,7 @@ class SafetyInfo(models.Model):
         return f'SafetyInfo for {self.user.email}'
 
 
+# Emergency contacts linked to a user (max 5 enforced at the API layer)
 class TrustedContact(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='trusted_contacts')
@@ -69,6 +73,7 @@ class TrustedContact(models.Model):
         return f'{self.name} ({self.relationship}) — {self.user.email}'
 
 
+# Pet records registered by the user for emergency care coordination (max 5 enforced at the API layer)
 class Pet(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='pets')
@@ -88,6 +93,7 @@ class Pet(models.Model):
         return f'{self.pet_name} — {self.user.email}'
 
 
+# OTP codes used for email verification and password reset
 class OTPVerification(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField()
@@ -111,6 +117,7 @@ class OTPVerification(models.Model):
         return f'OTP for {self.email}'
 
 
+# Invalidated JWT refresh tokens to prevent reuse after logout
 class BlacklistedToken(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     token = models.TextField()

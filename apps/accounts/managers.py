@@ -16,8 +16,6 @@ class UserManager(BaseUserManager):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_active', True)
-
-        # Superuser does not require name or phone_number
         extra_fields.setdefault('name', 'Admin')
         extra_fields.setdefault('phone_number', '')
 

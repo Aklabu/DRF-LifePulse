@@ -1,0 +1,53 @@
+from django.contrib import admin
+from django.utils import timezone
+from .models import CheckIn, MonitoringLog, NotificationLog
+
+
+@admin.register(MonitoringLog)
+class MonitoringLogAdmin(admin.ModelAdmin):
+    list_display = ['user', 'date', 'status', 'notified', 'deadline', 'notified_at']
+    list_filter = ['status', 'date', 'notified']
+    search_fields = ['user__email', 'user__name']
+    ordering = ['-date']
+    readonly_fields = ['created_at', 'updated_at']
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).select_related('user')
+
+    # Highlight overdue rows
+    def get_list_display_links(self, request, list_display):
+        return ['user']
+
+    def changelist_view(self, request, extra_context=None):
+        today = timezone.localdate()
+        overdue_today = MonitoringLog.objects.filter(
+            date=today,
+            status=MonitoringLog.STATUS_OVERDUE,
+        ).count()
+        extra_context = extra_context or {}
+        extra_context['overdue_today_count'] = overdue_today
+        return super().changelist_view(request, extra_context=extra_context)
+
+
+@admin.register(CheckIn)
+class CheckInAdmin(admin.ModelAdmin):
+    list_display = ['user', 'date', 'checked_in_at', 'note']
+    list_filter = ['date']
+    search_fields = ['user__email', 'user__name']
+    ordering = ['-checked_in_at']
+    readonly_fields = ['checked_in_at']
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).select_related('user')
+
+
+@admin.register(NotificationLog)
+class NotificationLogAdmin(admin.ModelAdmin):
+    list_display = ['contact_name', 'contact_relationship', 'contact_phone', 'status', 'sent_at']
+    list_filter = ['status', 'sent_at']
+    search_fields = ['contact_name', 'contact_phone', 'monitoring_log__user__email']
+    ordering = ['-sent_at']
+    readonly_fields = ['sent_at']
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).select_related('monitoring_log__user')

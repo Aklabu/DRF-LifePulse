@@ -1,0 +1,2682 @@
+{
+  "info": {
+    "_postman_id": "4c3791dd-be25-4c0f-b8e2-f3d9794b36b7",
+    "name": "Life Pulse",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "46563624",
+    "_collection_link": "https://go.postman.co/collection/46563624-4c3791dd-be25-4c0f-b8e2-f3d9794b36b7?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "accounts",
+      "item": [
+        {
+          "name": "sign up",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"John Doe\",\r\n  \"email\": \"john@example.com\",\r\n  \"phone_number\": \"+1234567890\",\r\n  \"password\": \"pass1234\",\r\n  \"safety_info\": {\r\n    \"living_status\": \"living_alone\",\r\n    \"home_address\": \"123 Main St, New York, NY\",\r\n    \"access_notes\": \"Key under the doormat\",\r\n    \"check_in_time\": \"09:00\"\r\n  },\r\n  \"trusted_contacts\": [\r\n    {\r\n      \"name\": \"Jane Doe\",\r\n      \"relationship\": \"Sister\",\r\n      \"phone_number\": \"+1987654321\",\r\n      \"email\": \"jane@example.com\"\r\n    }\r\n  ],\r\n  \"pets\": [\r\n    {\r\n      \"pet_name\": \"Buddy\",\r\n      \"age\": 3,\r\n      \"breed\": \"Golden Retriever\",\r\n      \"caregiver_name\": \"Mike\",\r\n      \"caregiver_phone\": \"+1555000111\"\r\n    }\r\n  ]\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/accounts/signup/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "accounts",
+                "signup",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"name\": \"John Doe\",\r\n  \"email\": \"john@example.com\",\r\n  \"phone_number\": \"+1234567890\",\r\n  \"password\": \"pass1234\",\r\n  \"safety_info\": {\r\n    \"living_status\": \"living_alone\",\r\n    \"home_address\": \"123 Main St, New York, NY\",\r\n    \"access_notes\": \"Key under the doormat\",\r\n    \"check_in_time\": \"09:00\"\r\n  },\r\n  \"trusted_contacts\": [\r\n    {\r\n      \"name\": \"Jane Doe\",\r\n      \"relationship\": \"Sister\",\r\n      \"phone_number\": \"+1987654321\",\r\n      \"email\": \"jane@example.com\"\r\n    }\r\n  ],\r\n  \"pets\": [\r\n    {\r\n      \"pet_name\": \"Buddy\",\r\n      \"age\": 3,\r\n      \"breed\": \"Golden Retriever\",\r\n      \"caregiver_name\": \"Mike\",\r\n      \"caregiver_phone\": \"+1555000111\"\r\n    }\r\n  ]\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/accounts/signup/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "accounts",
+                    "signup",
+                    ""
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Thu, 21 May 2026 19:17:35 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.13.13"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept"
+                },
+                {
+                  "key": "Allow",
+                  "value": "POST, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "1610"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"statusCode\": 201,\n    \"message\": \"Account created successfully.\",\n    \"timestamp\": \"2026-05-21T19:17:35.122835+00:00\",\n    \"data\": {\n        \"refresh\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc3OTk5NTg1NSwiaWF0IjoxNzc5MzkxMDU1LCJqdGkiOiI4YmI4MjM2NTc4Y2I0OTAwOGM1YTViMGQ2OTBjYTFhNSIsInVzZXJfaWQiOiJiMDg2YTZlOC02ODg0LTRkYmYtYWY0MC0yOWI5MjJkODgwNTEifQ.tmWLPJGprB2fHjMD0qCEB58BWqQFeWR9_uoOOqbNCOI\",\n        \"access\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzc5Mzk0NjU1LCJpYXQiOjE3NzkzOTEwNTUsImp0aSI6Ijc0OGJkOGM1MDViZDQwZDU4M2VlMjc2YTRjNGQ0YzNmIiwidXNlcl9pZCI6ImIwODZhNmU4LTY4ODQtNGRiZi1hZjQwLTI5YjkyMmQ4ODA1MSJ9.q1Vh52cyYhcGLtd3huhw85dxGU5LJ2Lyha-fkY7r--0\",\n        \"user\": {\n            \"id\": \"b086a6e8-6884-4dbf-af40-29b922d88051\",\n            \"name\": \"John Doe\",\n            \"email\": \"john@example.com\",\n            \"phone_number\": \"+1234567890\",\n            \"created_at\": \"2026-05-21T19:17:35.080201Z\",\n            \"updated_at\": \"2026-05-21T19:17:35.080219Z\",\n            \"safety_info\": {\n                \"living_status\": \"living_alone\",\n                \"home_address\": \"123 Main St, New York, NY\",\n                \"access_notes\": \"Key under the doormat\",\n                \"check_in_time\": \"09:00:00\"\n            },\n            \"trusted_contacts\": [\n                {\n                    \"id\": \"e5d6e160-d6ff-459f-8e30-903ada050c74\",\n                    \"name\": \"Jane Doe\",\n                    \"relationship\": \"Sister\",\n                    \"phone_number\": \"+1987654321\",\n                    \"email\": \"jane@example.com\",\n                    \"created_at\": \"2026-05-21T19:17:35.097439Z\",\n                    \"updated_at\": \"2026-05-21T19:17:35.097451Z\"\n                }\n            ],\n            \"pets\": [\n                {\n                    \"id\": \"54524bf2-81ff-4e71-8cb4-c5ec77ab84a8\",\n                    \"pet_name\": \"Buddy\",\n                    \"age\": 3,\n                    \"breed\": \"Golden Retriever\",\n                    \"photo\": null,\n                    \"caregiver_name\": \"Mike\",\n                    \"caregiver_phone\": \"+1555000111\",\n                    \"created_at\": \"2026-05-21T19:17:35.097799Z\",\n                    \"updated_at\": \"2026-05-21T19:17:35.097807Z\"\n                }\n            ]\n        }\n    },\n    \"errors\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "sign in",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"john@example.com\",\r\n  \"password\": \"newpass99\"\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/accounts/signin/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "accounts",
+                "signin",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"email\": \"john@example.com\",\r\n  \"password\": \"pass1234\"\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/accounts/signin/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "accounts",
+                    "signin",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Thu, 21 May 2026 19:18:45 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.13.13"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept"
+                },
+                {
+                  "key": "Allow",
+                  "value": "POST, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "1604"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"statusCode\": 200,\n    \"message\": \"Signed in successfully.\",\n    \"timestamp\": \"2026-05-21T19:18:45.294751+00:00\",\n    \"data\": {\n        \"refresh\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc3OTk5NTkyNSwiaWF0IjoxNzc5MzkxMTI1LCJqdGkiOiI2MWVmMDhmZDczZTk0ODA1YTdlZjQ2NDM1MDU5MDhlZCIsInVzZXJfaWQiOiJiMDg2YTZlOC02ODg0LTRkYmYtYWY0MC0yOWI5MjJkODgwNTEifQ.zJQM2q6-90ig_xZy74LLv2AYu_XxCGkYvCKNXZGZ03g\",\n        \"access\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzc5Mzk0NzI1LCJpYXQiOjE3NzkzOTExMjUsImp0aSI6IjAwYTgxM2QzY2ZmZDRjZDk5N2MwN2NiZjk4YzY2NzczIiwidXNlcl9pZCI6ImIwODZhNmU4LTY4ODQtNGRiZi1hZjQwLTI5YjkyMmQ4ODA1MSJ9.KQp7FXiBSXv3ra-5n1Z8nSTzVyJL-be-M3_ZVWt6H24\",\n        \"user\": {\n            \"id\": \"b086a6e8-6884-4dbf-af40-29b922d88051\",\n            \"name\": \"John Doe\",\n            \"email\": \"john@example.com\",\n            \"phone_number\": \"+1234567890\",\n            \"created_at\": \"2026-05-21T19:17:35.080201Z\",\n            \"updated_at\": \"2026-05-21T19:17:35.080219Z\",\n            \"safety_info\": {\n                \"living_status\": \"living_alone\",\n                \"home_address\": \"123 Main St, New York, NY\",\n                \"access_notes\": \"Key under the doormat\",\n                \"check_in_time\": \"09:00:00\"\n            },\n            \"trusted_contacts\": [\n                {\n                    \"id\": \"e5d6e160-d6ff-459f-8e30-903ada050c74\",\n                    \"name\": \"Jane Doe\",\n                    \"relationship\": \"Sister\",\n                    \"phone_number\": \"+1987654321\",\n                    \"email\": \"jane@example.com\",\n                    \"created_at\": \"2026-05-21T19:17:35.097439Z\",\n                    \"updated_at\": \"2026-05-21T19:17:35.097451Z\"\n                }\n            ],\n            \"pets\": [\n                {\n                    \"id\": \"54524bf2-81ff-4e71-8cb4-c5ec77ab84a8\",\n                    \"pet_name\": \"Buddy\",\n                    \"age\": 3,\n                    \"breed\": \"Golden Retriever\",\n                    \"photo\": null,\n                    \"caregiver_name\": \"Mike\",\n                    \"caregiver_phone\": \"+1555000111\",\n                    \"created_at\": \"2026-05-21T19:17:35.097799Z\",\n                    \"updated_at\": \"2026-05-21T19:17:35.097807Z\"\n                }\n            ]\n        }\n    },\n    \"errors\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "log out",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"refresh_token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc3OTk5NTkyNSwiaWF0IjoxNzc5MzkxMTI1LCJqdGkiOiI2MWVmMDhmZDczZTk0ODA1YTdlZjQ2NDM1MDU5MDhlZCIsInVzZXJfaWQiOiJiMDg2YTZlOC02ODg0LTRkYmYtYWY0MC0yOWI5MjJkODgwNTEifQ.zJQM2q6-90ig_xZy74LLv2AYu_XxCGkYvCKNXZGZ03g\"\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/accounts/logout/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "accounts",
+                "logout",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"refresh_token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc3OTk5NTkyNSwiaWF0IjoxNzc5MzkxMTI1LCJqdGkiOiI2MWVmMDhmZDczZTk0ODA1YTdlZjQ2NDM1MDU5MDhlZCIsInVzZXJfaWQiOiJiMDg2YTZlOC02ODg0LTRkYmYtYWY0MC0yOWI5MjJkODgwNTEifQ.zJQM2q6-90ig_xZy74LLv2AYu_XxCGkYvCKNXZGZ03g\"\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/accounts/logout/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "accounts",
+                    "logout",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Thu, 21 May 2026 20:09:54 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.13.13"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept"
+                },
+                {
+                  "key": "Allow",
+                  "value": "POST, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "143"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"statusCode\": 200,\n    \"message\": \"Logged out successfully.\",\n    \"timestamp\": \"2026-05-21T20:09:54.669409+00:00\",\n    \"data\": null,\n    \"errors\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "token refresh",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"refresh_token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc3OTk5NTkyNSwiaWF0IjoxNzc5MzkxMTI1LCJqdGkiOiI2MWVmMDhmZDczZTk0ODA1YTdlZjQ2NDM1MDU5MDhlZCIsInVzZXJfaWQiOiJiMDg2YTZlOC02ODg0LTRkYmYtYWY0MC0yOWI5MjJkODgwNTEifQ.zJQM2q6-90ig_xZy74LLv2AYu_XxCGkYvCKNXZGZ03g\"\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/accounts/token/refresh/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "accounts",
+                "token",
+                "refresh",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"refresh_token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc3OTk5NTkyNSwiaWF0IjoxNzc5MzkxMTI1LCJqdGkiOiI2MWVmMDhmZDczZTk0ODA1YTdlZjQ2NDM1MDU5MDhlZCIsInVzZXJfaWQiOiJiMDg2YTZlOC02ODg0LTRkYmYtYWY0MC0yOWI5MjJkODgwNTEifQ.zJQM2q6-90ig_xZy74LLv2AYu_XxCGkYvCKNXZGZ03g\"\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/accounts/token/refresh/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "accounts",
+                    "token",
+                    "refresh",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Thu, 21 May 2026 20:09:25 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.13.13"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept"
+                },
+                {
+                  "key": "Allow",
+                  "value": "POST, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "434"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"statusCode\": 200,\n    \"message\": \"Token refreshed successfully.\",\n    \"timestamp\": \"2026-05-21T20:09:25.025832+00:00\",\n    \"data\": {\n        \"access\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzc5Mzk3NzY1LCJpYXQiOjE3NzkzOTQxNjUsImp0aSI6IjViNTM5Nzc3ZTgzODQwNWJhZWY2YjMyM2ZkNzA5YzQ4IiwidXNlcl9pZCI6ImIwODZhNmU4LTY4ODQtNGRiZi1hZjQwLTI5YjkyMmQ4ODA1MSJ9.TYO4rM2A_v0CLD-NPGnPBB1O5Y70CTdMWJtc6Zi4F9I\"\n    },\n    \"errors\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "change password",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"old_password\": \"pass1234\",\r\n  \"new_password\": \"newpass99\",\r\n  \"confirm_new_password\": \"newpass99\"\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/accounts/change-password/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "accounts",
+                "change-password",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"old_password\": \"pass1234\",\r\n  \"new_password\": \"newpass99\",\r\n  \"confirm_new_password\": \"newpass99\"\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/accounts/change-password/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "accounts",
+                    "change-password",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Thu, 21 May 2026 19:21:58 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.13.13"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept"
+                },
+                {
+                  "key": "Allow",
+                  "value": "POST, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "149"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"statusCode\": 200,\n    \"message\": \"Password changed successfully.\",\n    \"timestamp\": \"2026-05-21T19:21:58.196633+00:00\",\n    \"data\": null,\n    \"errors\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "forgot password",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"john@example.com\"\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/accounts/forgot-password/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "accounts",
+                "forgot-password",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"email\": \"john@example.com\"\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/accounts/forgot-password/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "accounts",
+                    "forgot-password",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Thu, 21 May 2026 19:36:25 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.13.13"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept"
+                },
+                {
+                  "key": "Allow",
+                  "value": "POST, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "178"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"statusCode\": 200,\n    \"message\": \"If an account with that email exists, an OTP has been sent.\",\n    \"timestamp\": \"2026-05-21T19:36:25.385181+00:00\",\n    \"data\": null,\n    \"errors\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "resend otp",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"john@example.com\"\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/accounts/forgot-password/resend-otp/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "accounts",
+                "forgot-password",
+                "resend-otp",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"email\": \"john@example.com\"\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/accounts/forgot-password/resend-otp/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "accounts",
+                    "forgot-password",
+                    "resend-otp",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Thu, 21 May 2026 19:37:32 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.13.13"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept"
+                },
+                {
+                  "key": "Allow",
+                  "value": "POST, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "165"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"statusCode\": 200,\n    \"message\": \"If an account exists, a new OTP has been sent.\",\n    \"timestamp\": \"2026-05-21T19:37:32.283353+00:00\",\n    \"data\": null,\n    \"errors\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "verify otp",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"john@example.com\",\r\n  \"otp\": \"8424\"\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/accounts/forgot-password/verify-otp/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "accounts",
+                "forgot-password",
+                "verify-otp",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"email\": \"john@example.com\",\r\n  \"otp\": \"8424\"\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/accounts/forgot-password/verify-otp/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "accounts",
+                    "forgot-password",
+                    "verify-otp",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Thu, 21 May 2026 19:39:09 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.13.13"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept"
+                },
+                {
+                  "key": "Allow",
+                  "value": "POST, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "145"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"statusCode\": 200,\n    \"message\": \"OTP verified successfully.\",\n    \"timestamp\": \"2026-05-21T19:39:09.768095+00:00\",\n    \"data\": null,\n    \"errors\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "reset password",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"john@example.com\",\r\n  \"new_password\": \"newpass99\",\r\n  \"confirm_new_password\": \"newpass99\"\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/accounts/forgot-password/reset/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "accounts",
+                "forgot-password",
+                "reset",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"email\": \"john@example.com\",\r\n  \"new_password\": \"newpass99\",\r\n  \"confirm_new_password\": \"newpass99\"\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/accounts/forgot-password/reset/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "accounts",
+                    "forgot-password",
+                    "reset",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Thu, 21 May 2026 19:40:17 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.13.13"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept"
+                },
+                {
+                  "key": "Allow",
+                  "value": "POST, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "147"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"statusCode\": 200,\n    \"message\": \"Password reset successfully.\",\n    \"timestamp\": \"2026-05-21T19:40:17.165037+00:00\",\n    \"data\": null,\n    \"errors\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "profile",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/accounts/profile/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "accounts",
+                "profile",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/accounts/profile/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "accounts",
+                    "profile",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Thu, 21 May 2026 19:40:59 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.13.13"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept"
+                },
+                {
+                  "key": "Allow",
+                  "value": "GET, PATCH, HEAD, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "1022"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"statusCode\": 200,\n    \"message\": \"Profile retrieved successfully.\",\n    \"timestamp\": \"2026-05-21T19:40:59.498990+00:00\",\n    \"data\": {\n        \"id\": \"b086a6e8-6884-4dbf-af40-29b922d88051\",\n        \"name\": \"John Doe\",\n        \"email\": \"john@example.com\",\n        \"phone_number\": \"+1234567890\",\n        \"created_at\": \"2026-05-21T19:17:35.080201Z\",\n        \"updated_at\": \"2026-05-21T19:40:17.151241Z\",\n        \"safety_info\": {\n            \"living_status\": \"living_alone\",\n            \"home_address\": \"123 Main St, New York, NY\",\n            \"access_notes\": \"Key under the doormat\",\n            \"check_in_time\": \"09:00:00\"\n        },\n        \"trusted_contacts\": [\n            {\n                \"id\": \"e5d6e160-d6ff-459f-8e30-903ada050c74\",\n                \"name\": \"Jane Doe\",\n                \"relationship\": \"Sister\",\n                \"phone_number\": \"+1987654321\",\n                \"email\": \"jane@example.com\",\n                \"created_at\": \"2026-05-21T19:17:35.097439Z\",\n                \"updated_at\": \"2026-05-21T19:17:35.097451Z\"\n            }\n        ],\n        \"pets\": [\n            {\n                \"id\": \"54524bf2-81ff-4e71-8cb4-c5ec77ab84a8\",\n                \"pet_name\": \"Buddy\",\n                \"age\": 3,\n                \"breed\": \"Golden Retriever\",\n                \"photo\": null,\n                \"caregiver_name\": \"Mike\",\n                \"caregiver_phone\": \"+1555000111\",\n                \"created_at\": \"2026-05-21T19:17:35.097799Z\",\n                \"updated_at\": \"2026-05-21T19:17:35.097807Z\"\n            }\n        ]\n    },\n    \"errors\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "update profile",
+          "request": {
+            "method": "PATCH",
+            "header": []
+          },
+          "response": [
+            {
+              "name": "update name only",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"name\": \"John Updated\"\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/accounts/profile/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "accounts",
+                    "profile",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Thu, 21 May 2026 19:52:14 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.13.13"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept"
+                },
+                {
+                  "key": "Allow",
+                  "value": "GET, PATCH, HEAD, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "1273"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"statusCode\": 200,\n    \"message\": \"Profile updated successfully.\",\n    \"timestamp\": \"2026-05-21T19:52:14.764969+00:00\",\n    \"data\": {\n        \"id\": \"b086a6e8-6884-4dbf-af40-29b922d88051\",\n        \"name\": \"John Updated\",\n        \"email\": \"john@example.com\",\n        \"phone_number\": \"+1234567890\",\n        \"created_at\": \"2026-05-21T19:17:35.080201Z\",\n        \"updated_at\": \"2026-05-21T19:52:14.757693Z\",\n        \"safety_info\": {\n            \"living_status\": \"living_alone\",\n            \"home_address\": \"123 Main St, New York, NY\",\n            \"access_notes\": \"Key under the doormat\",\n            \"check_in_time\": \"09:00:00\"\n        },\n        \"trusted_contacts\": [\n            {\n                \"id\": \"2c3cab4c-8232-4776-969b-a66eb3864c97\",\n                \"name\": \"Bob Smith\",\n                \"relationship\": \"Friend\",\n                \"phone_number\": \"+1444555666\",\n                \"email\": \"bob@example.com\",\n                \"created_at\": \"2026-05-21T19:44:20.891470Z\",\n                \"updated_at\": \"2026-05-21T19:44:20.891483Z\"\n            }\n        ],\n        \"pets\": [\n            {\n                \"id\": \"54524bf2-81ff-4e71-8cb4-c5ec77ab84a8\",\n                \"pet_name\": \"Buddy\",\n                \"age\": 3,\n                \"breed\": \"Golden Retriever\",\n                \"photo\": null,\n                \"caregiver_name\": \"Mike\",\n                \"caregiver_phone\": \"+1555000111\",\n                \"created_at\": \"2026-05-21T19:17:35.097799Z\",\n                \"updated_at\": \"2026-05-21T19:17:35.097807Z\"\n            },\n            {\n                \"id\": \"0296507a-f2e6-4b2b-8e1d-34a998d2c71b\",\n                \"pet_name\": \"Luna\",\n                \"age\": 2,\n                \"breed\": \"Siamese Cat\",\n                \"photo\": null,\n                \"caregiver_name\": \"Sara\",\n                \"caregiver_phone\": \"+1666777888\",\n                \"created_at\": \"2026-05-21T19:48:25.237945Z\",\n                \"updated_at\": \"2026-05-21T19:48:25.237960Z\"\n            }\n        ]\n    },\n    \"errors\": null\n}"
+            },
+            {
+              "name": "update phone only",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"phone_number\": \"+1999888777\"\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/accounts/profile/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "accounts",
+                    "profile",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Thu, 21 May 2026 19:52:51 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.13.13"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept"
+                },
+                {
+                  "key": "Allow",
+                  "value": "GET, PATCH, HEAD, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "1273"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"statusCode\": 200,\n    \"message\": \"Profile updated successfully.\",\n    \"timestamp\": \"2026-05-21T19:52:51.228342+00:00\",\n    \"data\": {\n        \"id\": \"b086a6e8-6884-4dbf-af40-29b922d88051\",\n        \"name\": \"John Updated\",\n        \"email\": \"john@example.com\",\n        \"phone_number\": \"+1999888777\",\n        \"created_at\": \"2026-05-21T19:17:35.080201Z\",\n        \"updated_at\": \"2026-05-21T19:52:51.220252Z\",\n        \"safety_info\": {\n            \"living_status\": \"living_alone\",\n            \"home_address\": \"123 Main St, New York, NY\",\n            \"access_notes\": \"Key under the doormat\",\n            \"check_in_time\": \"09:00:00\"\n        },\n        \"trusted_contacts\": [\n            {\n                \"id\": \"2c3cab4c-8232-4776-969b-a66eb3864c97\",\n                \"name\": \"Bob Smith\",\n                \"relationship\": \"Friend\",\n                \"phone_number\": \"+1444555666\",\n                \"email\": \"bob@example.com\",\n                \"created_at\": \"2026-05-21T19:44:20.891470Z\",\n                \"updated_at\": \"2026-05-21T19:44:20.891483Z\"\n            }\n        ],\n        \"pets\": [\n            {\n                \"id\": \"54524bf2-81ff-4e71-8cb4-c5ec77ab84a8\",\n                \"pet_name\": \"Buddy\",\n                \"age\": 3,\n                \"breed\": \"Golden Retriever\",\n                \"photo\": null,\n                \"caregiver_name\": \"Mike\",\n                \"caregiver_phone\": \"+1555000111\",\n                \"created_at\": \"2026-05-21T19:17:35.097799Z\",\n                \"updated_at\": \"2026-05-21T19:17:35.097807Z\"\n            },\n            {\n                \"id\": \"0296507a-f2e6-4b2b-8e1d-34a998d2c71b\",\n                \"pet_name\": \"Luna\",\n                \"age\": 2,\n                \"breed\": \"Siamese Cat\",\n                \"photo\": null,\n                \"caregiver_name\": \"Sara\",\n                \"caregiver_phone\": \"+1666777888\",\n                \"created_at\": \"2026-05-21T19:48:25.237945Z\",\n                \"updated_at\": \"2026-05-21T19:48:25.237960Z\"\n            }\n        ]\n    },\n    \"errors\": null\n}"
+            },
+            {
+              "name": "update safety info",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"safety_info\": {\r\n    \"home_address\": \"456 New Ave, Brooklyn, NY\",\r\n    \"access_notes\": \"Spare key with neighbor\",\r\n    \"check_in_time\": \"10:30\",\r\n    \"living_status\": \"temporarily_alone\"\r\n  }\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/accounts/profile/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "accounts",
+                    "profile",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Thu, 21 May 2026 19:53:24 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.13.13"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept"
+                },
+                {
+                  "key": "Allow",
+                  "value": "GET, PATCH, HEAD, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "1280"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"statusCode\": 200,\n    \"message\": \"Profile updated successfully.\",\n    \"timestamp\": \"2026-05-21T19:53:24.681253+00:00\",\n    \"data\": {\n        \"id\": \"b086a6e8-6884-4dbf-af40-29b922d88051\",\n        \"name\": \"John Updated\",\n        \"email\": \"john@example.com\",\n        \"phone_number\": \"+1999888777\",\n        \"created_at\": \"2026-05-21T19:17:35.080201Z\",\n        \"updated_at\": \"2026-05-21T19:53:24.668275Z\",\n        \"safety_info\": {\n            \"living_status\": \"temporarily_alone\",\n            \"home_address\": \"456 New Ave, Brooklyn, NY\",\n            \"access_notes\": \"Spare key with neighbor\",\n            \"check_in_time\": \"10:30:00\"\n        },\n        \"trusted_contacts\": [\n            {\n                \"id\": \"2c3cab4c-8232-4776-969b-a66eb3864c97\",\n                \"name\": \"Bob Smith\",\n                \"relationship\": \"Friend\",\n                \"phone_number\": \"+1444555666\",\n                \"email\": \"bob@example.com\",\n                \"created_at\": \"2026-05-21T19:44:20.891470Z\",\n                \"updated_at\": \"2026-05-21T19:44:20.891483Z\"\n            }\n        ],\n        \"pets\": [\n            {\n                \"id\": \"54524bf2-81ff-4e71-8cb4-c5ec77ab84a8\",\n                \"pet_name\": \"Buddy\",\n                \"age\": 3,\n                \"breed\": \"Golden Retriever\",\n                \"photo\": null,\n                \"caregiver_name\": \"Mike\",\n                \"caregiver_phone\": \"+1555000111\",\n                \"created_at\": \"2026-05-21T19:17:35.097799Z\",\n                \"updated_at\": \"2026-05-21T19:17:35.097807Z\"\n            },\n            {\n                \"id\": \"0296507a-f2e6-4b2b-8e1d-34a998d2c71b\",\n                \"pet_name\": \"Luna\",\n                \"age\": 2,\n                \"breed\": \"Siamese Cat\",\n                \"photo\": null,\n                \"caregiver_name\": \"Sara\",\n                \"caregiver_phone\": \"+1666777888\",\n                \"created_at\": \"2026-05-21T19:48:25.237945Z\",\n                \"updated_at\": \"2026-05-21T19:48:25.237960Z\"\n            }\n        ]\n    },\n    \"errors\": null\n}"
+            },
+            {
+              "name": "update everything",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"name\": \"John Updated\",\r\n  \"phone_number\": \"+1999888777\",\r\n  \"safety_info\": {\r\n    \"home_address\": \"789 Park Blvd, Queens, NY\",\r\n    \"check_in_time\": \"08:00\",\r\n    \"living_status\": \"living_alone\"\r\n  }\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/accounts/profile/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "accounts",
+                    "profile",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Thu, 21 May 2026 19:54:15 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.13.13"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept"
+                },
+                {
+                  "key": "Allow",
+                  "value": "GET, PATCH, HEAD, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "1275"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"statusCode\": 200,\n    \"message\": \"Profile updated successfully.\",\n    \"timestamp\": \"2026-05-21T19:54:15.566314+00:00\",\n    \"data\": {\n        \"id\": \"b086a6e8-6884-4dbf-af40-29b922d88051\",\n        \"name\": \"John Updated\",\n        \"email\": \"john@example.com\",\n        \"phone_number\": \"+1999888777\",\n        \"created_at\": \"2026-05-21T19:17:35.080201Z\",\n        \"updated_at\": \"2026-05-21T19:54:15.555194Z\",\n        \"safety_info\": {\n            \"living_status\": \"living_alone\",\n            \"home_address\": \"789 Park Blvd, Queens, NY\",\n            \"access_notes\": \"Spare key with neighbor\",\n            \"check_in_time\": \"08:00:00\"\n        },\n        \"trusted_contacts\": [\n            {\n                \"id\": \"2c3cab4c-8232-4776-969b-a66eb3864c97\",\n                \"name\": \"Bob Smith\",\n                \"relationship\": \"Friend\",\n                \"phone_number\": \"+1444555666\",\n                \"email\": \"bob@example.com\",\n                \"created_at\": \"2026-05-21T19:44:20.891470Z\",\n                \"updated_at\": \"2026-05-21T19:44:20.891483Z\"\n            }\n        ],\n        \"pets\": [\n            {\n                \"id\": \"54524bf2-81ff-4e71-8cb4-c5ec77ab84a8\",\n                \"pet_name\": \"Buddy\",\n                \"age\": 3,\n                \"breed\": \"Golden Retriever\",\n                \"photo\": null,\n                \"caregiver_name\": \"Mike\",\n                \"caregiver_phone\": \"+1555000111\",\n                \"created_at\": \"2026-05-21T19:17:35.097799Z\",\n                \"updated_at\": \"2026-05-21T19:17:35.097807Z\"\n            },\n            {\n                \"id\": \"0296507a-f2e6-4b2b-8e1d-34a998d2c71b\",\n                \"pet_name\": \"Luna\",\n                \"age\": 2,\n                \"breed\": \"Siamese Cat\",\n                \"photo\": null,\n                \"caregiver_name\": \"Sara\",\n                \"caregiver_phone\": \"+1666777888\",\n                \"created_at\": \"2026-05-21T19:48:25.237945Z\",\n                \"updated_at\": \"2026-05-21T19:48:25.237960Z\"\n            }\n        ]\n    },\n    \"errors\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "contact list",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/accounts/contacts/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "accounts",
+                "contacts",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/accounts/contacts/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "accounts",
+                    "contacts",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Thu, 21 May 2026 19:43:09 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.13.13"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept"
+                },
+                {
+                  "key": "Allow",
+                  "value": "GET, POST, HEAD, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "378"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"statusCode\": 200,\n    \"message\": \"Contacts retrieved successfully.\",\n    \"timestamp\": \"2026-05-21T19:43:09.428898+00:00\",\n    \"data\": [\n        {\n            \"id\": \"e5d6e160-d6ff-459f-8e30-903ada050c74\",\n            \"name\": \"Jane Doe\",\n            \"relationship\": \"Sister\",\n            \"phone_number\": \"+1987654321\",\n            \"email\": \"jane@example.com\",\n            \"created_at\": \"2026-05-21T19:17:35.097439Z\",\n            \"updated_at\": \"2026-05-21T19:17:35.097451Z\"\n        }\n    ],\n    \"errors\": null\n}"
+            },
+            {
+              "name": "success - 2",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/accounts/contacts/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "accounts",
+                    "contacts",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Thu, 21 May 2026 19:44:38 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.13.13"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept"
+                },
+                {
+                  "key": "Allow",
+                  "value": "GET, POST, HEAD, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "608"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"statusCode\": 200,\n    \"message\": \"Contacts retrieved successfully.\",\n    \"timestamp\": \"2026-05-21T19:44:38.968340+00:00\",\n    \"data\": [\n        {\n            \"id\": \"e5d6e160-d6ff-459f-8e30-903ada050c74\",\n            \"name\": \"Jane Doe\",\n            \"relationship\": \"Sister\",\n            \"phone_number\": \"+1987654321\",\n            \"email\": \"jane@example.com\",\n            \"created_at\": \"2026-05-21T19:17:35.097439Z\",\n            \"updated_at\": \"2026-05-21T19:17:35.097451Z\"\n        },\n        {\n            \"id\": \"2c3cab4c-8232-4776-969b-a66eb3864c97\",\n            \"name\": \"Bob Smith\",\n            \"relationship\": \"Friend\",\n            \"phone_number\": \"+1444555666\",\n            \"email\": \"bob@example.com\",\n            \"created_at\": \"2026-05-21T19:44:20.891470Z\",\n            \"updated_at\": \"2026-05-21T19:44:20.891483Z\"\n        }\n    ],\n    \"errors\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "add contact",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Bob Smith\",\r\n  \"relationship\": \"Friend\",\r\n  \"phone_number\": \"+1444555666\",\r\n  \"email\": \"bob@example.com\"\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/accounts/contacts/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "accounts",
+                "contacts",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"name\": \"Bob Smith\",\r\n  \"relationship\": \"Friend\",\r\n  \"phone_number\": \"+1444555666\",\r\n  \"email\": \"bob@example.com\"\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/accounts/contacts/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "accounts",
+                    "contacts",
+                    ""
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Thu, 21 May 2026 19:44:20 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.13.13"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept"
+                },
+                {
+                  "key": "Allow",
+                  "value": "GET, POST, HEAD, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "371"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"statusCode\": 201,\n    \"message\": \"Contact added successfully.\",\n    \"timestamp\": \"2026-05-21T19:44:20.894925+00:00\",\n    \"data\": {\n        \"id\": \"2c3cab4c-8232-4776-969b-a66eb3864c97\",\n        \"name\": \"Bob Smith\",\n        \"relationship\": \"Friend\",\n        \"phone_number\": \"+1444555666\",\n        \"email\": \"bob@example.com\",\n        \"created_at\": \"2026-05-21T19:44:20.891470Z\",\n        \"updated_at\": \"2026-05-21T19:44:20.891483Z\"\n    },\n    \"errors\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "update contact",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Jane Smith\",\r\n  \"relationship\": \"Mother\",\r\n  \"phone_number\": \"+1111222333\",\r\n  \"email\": \"janesmith@example.com\"\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/accounts/contacts/:id/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "accounts",
+                "contacts",
+                ":id",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "2c3cab4c-8232-4776-969b-a66eb3864c97"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"name\": \"Jane Smith\",\r\n  \"relationship\": \"Mother\",\r\n  \"phone_number\": \"+1111222333\",\r\n  \"email\": \"janesmith@example.com\"\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/accounts/contacts/:id/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "accounts",
+                    "contacts",
+                    ":id",
+                    ""
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "2c3cab4c-8232-4776-969b-a66eb3864c97"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Thu, 21 May 2026 19:59:46 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.13.13"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept"
+                },
+                {
+                  "key": "Allow",
+                  "value": "PATCH, DELETE, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "380"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"statusCode\": 200,\n    \"message\": \"Contact updated successfully.\",\n    \"timestamp\": \"2026-05-21T19:59:46.024439+00:00\",\n    \"data\": {\n        \"id\": \"2c3cab4c-8232-4776-969b-a66eb3864c97\",\n        \"name\": \"Jane Smith\",\n        \"relationship\": \"Mother\",\n        \"phone_number\": \"+1111222333\",\n        \"email\": \"janesmith@example.com\",\n        \"created_at\": \"2026-05-21T19:44:20.891470Z\",\n        \"updated_at\": \"2026-05-21T19:59:46.019594Z\"\n    },\n    \"errors\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "delete contact",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/accounts/contacts/:id/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "accounts",
+                "contacts",
+                ":id",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "e5d6e160-d6ff-459f-8e30-903ada050c74"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/accounts/contacts/:id/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "accounts",
+                    "contacts",
+                    ":id",
+                    ""
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "e5d6e160-d6ff-459f-8e30-903ada050c74"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Thu, 21 May 2026 19:46:18 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.13.13"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept"
+                },
+                {
+                  "key": "Allow",
+                  "value": "PATCH, DELETE, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "148"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"statusCode\": 200,\n    \"message\": \"Contact deleted successfully.\",\n    \"timestamp\": \"2026-05-21T19:46:18.973855+00:00\",\n    \"data\": null,\n    \"errors\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "pet list",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/accounts/pets/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "accounts",
+                "pets",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/accounts/pets/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "accounts",
+                    "pets",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Thu, 21 May 2026 19:47:11 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.13.13"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept"
+                },
+                {
+                  "key": "Allow",
+                  "value": "GET, POST, HEAD, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "399"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"statusCode\": 200,\n    \"message\": \"Pets retrieved successfully.\",\n    \"timestamp\": \"2026-05-21T19:47:11.548544+00:00\",\n    \"data\": [\n        {\n            \"id\": \"54524bf2-81ff-4e71-8cb4-c5ec77ab84a8\",\n            \"pet_name\": \"Buddy\",\n            \"age\": 3,\n            \"breed\": \"Golden Retriever\",\n            \"photo\": null,\n            \"caregiver_name\": \"Mike\",\n            \"caregiver_phone\": \"+1555000111\",\n            \"created_at\": \"2026-05-21T19:17:35.097799Z\",\n            \"updated_at\": \"2026-05-21T19:17:35.097807Z\"\n        }\n    ],\n    \"errors\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "add pet",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"pet_name\": \"Luna\",\r\n  \"age\": 2,\r\n  \"breed\": \"Siamese Cat\",\r\n  \"caregiver_name\": \"Sara\",\r\n  \"caregiver_phone\": \"+1666777888\"\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/accounts/pets/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "accounts",
+                "pets",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"pet_name\": \"Luna\",\r\n  \"age\": 2,\r\n  \"breed\": \"Siamese Cat\",\r\n  \"caregiver_name\": \"Sara\",\r\n  \"caregiver_phone\": \"+1666777888\"\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/accounts/pets/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "accounts",
+                    "pets",
+                    ""
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Thu, 21 May 2026 19:48:25 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.13.13"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept"
+                },
+                {
+                  "key": "Allow",
+                  "value": "GET, POST, HEAD, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "386"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"statusCode\": 201,\n    \"message\": \"Pet added successfully.\",\n    \"timestamp\": \"2026-05-21T19:48:25.243123+00:00\",\n    \"data\": {\n        \"id\": \"0296507a-f2e6-4b2b-8e1d-34a998d2c71b\",\n        \"pet_name\": \"Luna\",\n        \"age\": 2,\n        \"breed\": \"Siamese Cat\",\n        \"photo\": null,\n        \"caregiver_name\": \"Sara\",\n        \"caregiver_phone\": \"+1666777888\",\n        \"created_at\": \"2026-05-21T19:48:25.237945Z\",\n        \"updated_at\": \"2026-05-21T19:48:25.237960Z\"\n    },\n    \"errors\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "update pet",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"pet_name\": \"Buddy Jr.\",\r\n  \"age\": 4\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/accounts/pets/:id/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "accounts",
+                "pets",
+                ":id",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "54524bf2-81ff-4e71-8cb4-c5ec77ab84a8"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"pet_name\": \"Buddy Jr.\",\r\n  \"age\": 4\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/accounts/pets/:id/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "accounts",
+                    "pets",
+                    ":id",
+                    ""
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "54524bf2-81ff-4e71-8cb4-c5ec77ab84a8"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Thu, 21 May 2026 20:01:36 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.13.13"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept"
+                },
+                {
+                  "key": "Allow",
+                  "value": "PATCH, DELETE, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "398"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"statusCode\": 200,\n    \"message\": \"Pet updated successfully.\",\n    \"timestamp\": \"2026-05-21T20:01:36.655203+00:00\",\n    \"data\": {\n        \"id\": \"54524bf2-81ff-4e71-8cb4-c5ec77ab84a8\",\n        \"pet_name\": \"Buddy Jr.\",\n        \"age\": 4,\n        \"breed\": \"Golden Retriever\",\n        \"photo\": null,\n        \"caregiver_name\": \"Mike\",\n        \"caregiver_phone\": \"+1555000111\",\n        \"created_at\": \"2026-05-21T19:17:35.097799Z\",\n        \"updated_at\": \"2026-05-21T20:01:36.651291Z\"\n    },\n    \"errors\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "delete pet",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/accounts/pets/:id/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "accounts",
+                "pets",
+                ":id",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "54524bf2-81ff-4e71-8cb4-c5ec77ab84a8"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/accounts/pets/:id/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "accounts",
+                    "pets",
+                    ":id",
+                    ""
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "54524bf2-81ff-4e71-8cb4-c5ec77ab84a8"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Thu, 21 May 2026 20:03:11 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.13.13"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept"
+                },
+                {
+                  "key": "Allow",
+                  "value": "PATCH, DELETE, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "144"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"statusCode\": 200,\n    \"message\": \"Pet deleted successfully.\",\n    \"timestamp\": \"2026-05-21T20:03:11.521394+00:00\",\n    \"data\": null,\n    \"errors\": null\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "monitoring",
+      "item": [
+        {
+          "name": "check in",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/monitoring/check-in/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "monitoring",
+                "check-in",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/monitoring/check-in/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "monitoring",
+                    "check-in",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Thu, 21 May 2026 21:36:03 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.13.13"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept"
+                },
+                {
+                  "key": "Allow",
+                  "value": "POST, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "238"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"statusCode\": 200,\n    \"message\": \"Checked in successfully.\",\n    \"timestamp\": \"2026-05-21T21:36:03.604433+00:00\",\n    \"data\": {\n        \"checked_in_at\": \"2026-05-21T21:36:03.591091Z\",\n        \"date\": \"2026-05-21\",\n        \"status\": \"checked_in\",\n        \"note\": \"\"\n    },\n    \"errors\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "get todays status",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/monitoring/status/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "monitoring",
+                "status",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/monitoring/status/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "monitoring",
+                    "status",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Thu, 21 May 2026 21:35:54 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.13.13"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept"
+                },
+                {
+                  "key": "Allow",
+                  "value": "GET, HEAD, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "277"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"statusCode\": 200,\n    \"message\": \"Status retrieved successfully.\",\n    \"timestamp\": \"2026-05-21T21:35:54.733869+00:00\",\n    \"data\": {\n        \"date\": \"2026-05-21\",\n        \"scheduled_check_in_time\": \"03:05:00\",\n        \"deadline\": \"2026-05-21T09:05:00Z\",\n        \"status\": \"pending\",\n        \"checked_in_at\": null\n    },\n    \"errors\": null\n}"
+            },
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/monitoring/status/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "monitoring",
+                    "status",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Thu, 21 May 2026 21:36:43 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.13.13"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept"
+                },
+                {
+                  "key": "Allow",
+                  "value": "GET, HEAD, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "305"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"statusCode\": 200,\n    \"message\": \"Status retrieved successfully.\",\n    \"timestamp\": \"2026-05-21T21:36:43.274891+00:00\",\n    \"data\": {\n        \"date\": \"2026-05-21\",\n        \"scheduled_check_in_time\": \"03:05:00\",\n        \"deadline\": \"2026-05-21T09:05:00Z\",\n        \"status\": \"checked_in\",\n        \"checked_in_at\": \"2026-05-21T21:36:03.591091Z\"\n    },\n    \"errors\": null\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": ""
+    },
+    {
+      "key": "access_token",
+      "value": ""
+    }
+  ]
+}

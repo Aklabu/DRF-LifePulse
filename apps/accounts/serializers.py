@@ -24,6 +24,15 @@ class PetSerializer(serializers.ModelSerializer):
         exclude = ['user']
         read_only_fields = ['id', 'created_at', 'updated_at']
 
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+        request = self.context.get('request')
+        if instance.photo and request:
+            rep['photo'] = request.build_absolute_uri(instance.photo.url)
+        else:
+            rep['photo'] = None
+        return rep
+
 
 # Read-only; returns the full user profile with nested safety info, contacts, and pets
 class UserProfileSerializer(serializers.ModelSerializer):

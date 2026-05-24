@@ -55,7 +55,7 @@ class SignupView(APIView):
                 Pet.objects.create(user=user, **pet_data)
 
         tokens = get_tokens_for_user(user)
-        profile = UserProfileSerializer(user).data
+        profile = UserProfileSerializer(user, context={'request': request}).data
 
         return CustomResponse.success(
             message='Account created successfully.',
@@ -79,7 +79,7 @@ class SigninView(APIView):
 
         user = serializer.validated_data['user']
         tokens = get_tokens_for_user(user)
-        profile = UserProfileSerializer(user).data
+        profile = UserProfileSerializer(user, context={'request': request}).data
 
         return CustomResponse.success(
             message='Signed in successfully.',
@@ -294,7 +294,7 @@ class ProfileView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        serializer = UserProfileSerializer(request.user)
+        serializer = UserProfileSerializer(request.user, context={'request': request})
         return CustomResponse.success(
             message='Profile retrieved successfully.',
             data=serializer.data,
@@ -321,7 +321,7 @@ class ProfileView(APIView):
         if 'safety_info' in data:
             SafetyInfo.objects.filter(user=user).update(**data['safety_info'])
 
-        profile = UserProfileSerializer(user).data
+        profile = UserProfileSerializer(user, context={'request': request}).data
         return CustomResponse.success(
             message='Profile updated successfully.',
             data=profile,
@@ -413,7 +413,7 @@ class PetListCreateView(APIView):
 
     def get(self, request):
         pets = Pet.objects.filter(user=request.user)
-        serializer = PetSerializer(pets, many=True)
+        serializer = PetSerializer(pets, many=True, context={'request': request})
         return CustomResponse.success(
             message='Pets retrieved successfully.',
             data=serializer.data,
@@ -426,7 +426,7 @@ class PetListCreateView(APIView):
                 status_code=400,
             )
 
-        serializer = PetSerializer(data=request.data)
+        serializer = PetSerializer(data=request.data, context={'request': request})
         if not serializer.is_valid():
             return CustomResponse.error(
                 message='Validation failed.',
@@ -457,7 +457,12 @@ class PetDetailView(APIView):
         if not pet:
             return CustomResponse.error(message='Pet not found.', status_code=404)
 
-        serializer = PetSerializer(pet, data=request.data, partial=True)
+        serializer = PetSerializer(
+            pet,
+            data=request.data,
+            partial=True,
+            context={'request': request},
+        )
         if not serializer.is_valid():
             return CustomResponse.error(
                 message='Validation failed.',

@@ -1036,7 +1036,7 @@
               "header": [
                 {
                   "key": "Date",
-                  "value": "Thu, 21 May 2026 19:40:59 GMT"
+                  "value": "Sun, 24 May 2026 23:11:49 GMT"
                 },
                 {
                   "key": "Server",
@@ -1060,7 +1060,7 @@
                 },
                 {
                   "key": "Content-Length",
-                  "value": "1022"
+                  "value": "1128"
                 },
                 {
                   "key": "X-Content-Type-Options",
@@ -1076,7 +1076,7 @@
                 }
               ],
               "cookie": [],
-              "body": "{\n    \"success\": true,\n    \"statusCode\": 200,\n    \"message\": \"Profile retrieved successfully.\",\n    \"timestamp\": \"2026-05-21T19:40:59.498990+00:00\",\n    \"data\": {\n        \"id\": \"b086a6e8-6884-4dbf-af40-29b922d88051\",\n        \"name\": \"John Doe\",\n        \"email\": \"john@example.com\",\n        \"phone_number\": \"+1234567890\",\n        \"created_at\": \"2026-05-21T19:17:35.080201Z\",\n        \"updated_at\": \"2026-05-21T19:40:17.151241Z\",\n        \"safety_info\": {\n            \"living_status\": \"living_alone\",\n            \"home_address\": \"123 Main St, New York, NY\",\n            \"access_notes\": \"Key under the doormat\",\n            \"check_in_time\": \"09:00:00\"\n        },\n        \"trusted_contacts\": [\n            {\n                \"id\": \"e5d6e160-d6ff-459f-8e30-903ada050c74\",\n                \"name\": \"Jane Doe\",\n                \"relationship\": \"Sister\",\n                \"phone_number\": \"+1987654321\",\n                \"email\": \"jane@example.com\",\n                \"created_at\": \"2026-05-21T19:17:35.097439Z\",\n                \"updated_at\": \"2026-05-21T19:17:35.097451Z\"\n            }\n        ],\n        \"pets\": [\n            {\n                \"id\": \"54524bf2-81ff-4e71-8cb4-c5ec77ab84a8\",\n                \"pet_name\": \"Buddy\",\n                \"age\": 3,\n                \"breed\": \"Golden Retriever\",\n                \"photo\": null,\n                \"caregiver_name\": \"Mike\",\n                \"caregiver_phone\": \"+1555000111\",\n                \"created_at\": \"2026-05-21T19:17:35.097799Z\",\n                \"updated_at\": \"2026-05-21T19:17:35.097807Z\"\n            }\n        ]\n    },\n    \"errors\": null\n}"
+              "body": "{\n    \"success\": true,\n    \"statusCode\": 200,\n    \"message\": \"Profile retrieved successfully.\",\n    \"timestamp\": \"2026-05-24T23:11:49.446941+00:00\",\n    \"data\": {\n        \"id\": \"ff9ff0d6-c9df-48f8-87aa-ee21b95ea6d2\",\n        \"name\": \"John Doe\",\n        \"email\": \"mdjoniakterlabu@gmail.com\",\n        \"phone_number\": \"+1234567890\",\n        \"created_at\": \"2026-05-24T22:34:16.272134Z\",\n        \"updated_at\": \"2026-05-24T22:34:16.272157Z\",\n        \"safety_info\": {\n            \"living_status\": \"living_alone\",\n            \"home_address\": \"123 Main St, New York, NY\",\n            \"access_notes\": \"Key under the doormat\",\n            \"check_in_time\": \"09:00:00\"\n        },\n        \"trusted_contacts\": [\n            {\n                \"id\": \"c2b30297-c18a-4ee8-9867-7623da467840\",\n                \"name\": \"Jane Doe\",\n                \"relationship\": \"Sister\",\n                \"phone_number\": \"+1987654321\",\n                \"email\": \"jane@example.com\",\n                \"created_at\": \"2026-05-24T22:34:16.287650Z\",\n                \"updated_at\": \"2026-05-24T22:34:16.287662Z\"\n            }\n        ],\n        \"pets\": [\n            {\n                \"id\": \"3f54f5b1-e3c1-4776-baf3-5bba4a005a1d\",\n                \"pet_name\": \"Buddy Jr.\",\n                \"age\": 4,\n                \"breed\": \"Golden Retriever\",\n                \"photo\": \"http://127.0.0.1:8000/media/pets/thumbnail_Fit_Bark_gsd_german_shepherd_outside_331caf420b.jpeg\",\n                \"caregiver_name\": \"Mike\",\n                \"caregiver_phone\": \"+1555000111\",\n                \"created_at\": \"2026-05-24T22:34:16.288617Z\",\n                \"updated_at\": \"2026-05-24T22:48:15.017213Z\"\n            }\n        ]\n    },\n    \"errors\": null\n}"
             }
           ]
         },
@@ -1960,7 +1960,7 @@
               "header": [
                 {
                   "key": "Date",
-                  "value": "Thu, 21 May 2026 19:47:11 GMT"
+                  "value": "Sun, 24 May 2026 23:12:18 GMT"
                 },
                 {
                   "key": "Server",
@@ -1984,7 +1984,7 @@
                 },
                 {
                   "key": "Content-Length",
-                  "value": "399"
+                  "value": "496"
                 },
                 {
                   "key": "X-Content-Type-Options",
@@ -2000,7 +2000,143 @@
                 }
               ],
               "cookie": [],
-              "body": "{\n    \"success\": true,\n    \"statusCode\": 200,\n    \"message\": \"Pets retrieved successfully.\",\n    \"timestamp\": \"2026-05-21T19:47:11.548544+00:00\",\n    \"data\": [\n        {\n            \"id\": \"54524bf2-81ff-4e71-8cb4-c5ec77ab84a8\",\n            \"pet_name\": \"Buddy\",\n            \"age\": 3,\n            \"breed\": \"Golden Retriever\",\n            \"photo\": null,\n            \"caregiver_name\": \"Mike\",\n            \"caregiver_phone\": \"+1555000111\",\n            \"created_at\": \"2026-05-21T19:17:35.097799Z\",\n            \"updated_at\": \"2026-05-21T19:17:35.097807Z\"\n        }\n    ],\n    \"errors\": null\n}"
+              "body": "{\n    \"success\": true,\n    \"statusCode\": 200,\n    \"message\": \"Pets retrieved successfully.\",\n    \"timestamp\": \"2026-05-24T23:12:18.424708+00:00\",\n    \"data\": [\n        {\n            \"id\": \"3f54f5b1-e3c1-4776-baf3-5bba4a005a1d\",\n            \"pet_name\": \"Buddy Jr.\",\n            \"age\": 4,\n            \"breed\": \"Golden Retriever\",\n            \"photo\": \"http://127.0.0.1:8000/media/pets/thumbnail_Fit_Bark_gsd_german_shepherd_outside_331caf420b.jpeg\",\n            \"caregiver_name\": \"Mike\",\n            \"caregiver_phone\": \"+1555000111\",\n            \"created_at\": \"2026-05-24T22:34:16.288617Z\",\n            \"updated_at\": \"2026-05-24T22:48:15.017213Z\"\n        }\n    ],\n    \"errors\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "update pet",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"pet_name\": \"Buddy Jr.\",\r\n  \"age\": 4\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/accounts/pets/:id/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "accounts",
+                "pets",
+                ":id",
+                ""
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "54524bf2-81ff-4e71-8cb4-c5ec77ab84a8"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "photo",
+                      "type": "file",
+                      "uuid": "dd764f9b-3b67-4bd5-a891-ba4e08929a9e",
+                      "src": "/C:/Users/mdjon/Pictures/thumbnail_Fit_Bark_gsd_german_shepherd_outside_331caf420b.jpeg"
+                    }
+                  ],
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/accounts/pets/:id/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "accounts",
+                    "pets",
+                    ":id",
+                    ""
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "3f54f5b1-e3c1-4776-baf3-5bba4a005a1d"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Sun, 24 May 2026 23:12:31 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.13.13"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept"
+                },
+                {
+                  "key": "Allow",
+                  "value": "PATCH, DELETE, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "499"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"statusCode\": 200,\n    \"message\": \"Pet updated successfully.\",\n    \"timestamp\": \"2026-05-24T23:12:31.308200+00:00\",\n    \"data\": {\n        \"id\": \"3f54f5b1-e3c1-4776-baf3-5bba4a005a1d\",\n        \"pet_name\": \"Buddy Jr.\",\n        \"age\": 4,\n        \"breed\": \"Golden Retriever\",\n        \"photo\": \"http://127.0.0.1:8000/media/pets/thumbnail_Fit_Bark_gsd_german_shepherd_outside_331caf420b_juP3tGJ.jpeg\",\n        \"caregiver_name\": \"Mike\",\n        \"caregiver_phone\": \"+1555000111\",\n        \"created_at\": \"2026-05-24T22:34:16.288617Z\",\n        \"updated_at\": \"2026-05-24T23:12:31.303472Z\"\n    },\n    \"errors\": null\n}"
             }
           ]
         },
@@ -2116,135 +2252,6 @@
               ],
               "cookie": [],
               "body": "{\n    \"success\": true,\n    \"statusCode\": 201,\n    \"message\": \"Pet added successfully.\",\n    \"timestamp\": \"2026-05-21T19:48:25.243123+00:00\",\n    \"data\": {\n        \"id\": \"0296507a-f2e6-4b2b-8e1d-34a998d2c71b\",\n        \"pet_name\": \"Luna\",\n        \"age\": 2,\n        \"breed\": \"Siamese Cat\",\n        \"photo\": null,\n        \"caregiver_name\": \"Sara\",\n        \"caregiver_phone\": \"+1666777888\",\n        \"created_at\": \"2026-05-21T19:48:25.237945Z\",\n        \"updated_at\": \"2026-05-21T19:48:25.237960Z\"\n    },\n    \"errors\": null\n}"
-            }
-          ]
-        },
-        {
-          "name": "update pet",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{access_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "PATCH",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n  \"pet_name\": \"Buddy Jr.\",\r\n  \"age\": 4\r\n}\r\n",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/api/accounts/pets/:id/",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "accounts",
-                "pets",
-                ":id",
-                ""
-              ],
-              "variable": [
-                {
-                  "key": "id",
-                  "value": "54524bf2-81ff-4e71-8cb4-c5ec77ab84a8"
-                }
-              ]
-            }
-          },
-          "response": [
-            {
-              "name": "success",
-              "originalRequest": {
-                "method": "PATCH",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n  \"pet_name\": \"Buddy Jr.\",\r\n  \"age\": 4\r\n}\r\n",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{base_url}}/api/accounts/pets/:id/",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "api",
-                    "accounts",
-                    "pets",
-                    ":id",
-                    ""
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "54524bf2-81ff-4e71-8cb4-c5ec77ab84a8"
-                    }
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": null,
-              "header": [
-                {
-                  "key": "Date",
-                  "value": "Thu, 21 May 2026 20:01:36 GMT"
-                },
-                {
-                  "key": "Server",
-                  "value": "WSGIServer/0.2 CPython/3.13.13"
-                },
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Accept"
-                },
-                {
-                  "key": "Allow",
-                  "value": "PATCH, DELETE, OPTIONS"
-                },
-                {
-                  "key": "X-Frame-Options",
-                  "value": "DENY"
-                },
-                {
-                  "key": "Content-Length",
-                  "value": "398"
-                },
-                {
-                  "key": "X-Content-Type-Options",
-                  "value": "nosniff"
-                },
-                {
-                  "key": "Referrer-Policy",
-                  "value": "same-origin"
-                },
-                {
-                  "key": "Cross-Origin-Opener-Policy",
-                  "value": "same-origin"
-                }
-              ],
-              "cookie": [],
-              "body": "{\n    \"success\": true,\n    \"statusCode\": 200,\n    \"message\": \"Pet updated successfully.\",\n    \"timestamp\": \"2026-05-21T20:01:36.655203+00:00\",\n    \"data\": {\n        \"id\": \"54524bf2-81ff-4e71-8cb4-c5ec77ab84a8\",\n        \"pet_name\": \"Buddy Jr.\",\n        \"age\": 4,\n        \"breed\": \"Golden Retriever\",\n        \"photo\": null,\n        \"caregiver_name\": \"Mike\",\n        \"caregiver_phone\": \"+1555000111\",\n        \"created_at\": \"2026-05-21T19:17:35.097799Z\",\n        \"updated_at\": \"2026-05-21T20:01:36.651291Z\"\n    },\n    \"errors\": null\n}"
             }
           ]
         },

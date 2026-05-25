@@ -1,4 +1,47 @@
+from datetime import datetime, timedelta
+
 from django.conf import settings
+from django.utils import timezone
+
+
+def get_or_create_today_log(user):
+    """
+    Returns (MonitoringLog, created) for today.
+
+    If no log exists yet, creates one on the fly using the user's
+    SafetyInfo.check_in_time. Returns (None, False) if the user has
+    no SafetyInfo or no check_in_time configured.
+    """
+    from .models import MonitoringLog
+
+    today = timezone.localdate()
+
+    # Fast path — log already exists
+    try:
+        log = MonitoringLog.objects.get(user=user, date=today)
+        return log, False
+    except MonitoringLog.DoesNotExist:
+        pass
+
+    # Check the user has a valid SafetyInfo with a check_in_time
+    safety_info = getattr(user, 'safety_info', None)
+    if not safety_info or not safety_info.check_in_time:
+        return None, False
+
+    check_in_time = safety_info.check_in_time
+    scheduled_dt = timezone.make_aware(datetime.combine(today, check_in_time))
+    deadline = scheduled_dt + timedelta(hours=8)
+
+    log, created = MonitoringLog.objects.get_or_create(
+        user=user,
+        date=today,
+        defaults={
+            'scheduled_check_in_time': check_in_time,
+            'deadline': deadline,
+            'status': MonitoringLog.STATUS_PENDING,
+        },
+    )
+    return log, created
 
 
 def send_sms(to_phone: str, message: str) -> bool:

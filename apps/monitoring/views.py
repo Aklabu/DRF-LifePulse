@@ -5,20 +5,19 @@ from rest_framework.permissions import IsAuthenticated
 from utils.response import CustomResponse
 from .models import CheckIn, MonitoringLog
 from .serializers import CheckInSerializer, CheckInResponseSerializer, MonitoringStatusSerializer
+from .services import get_or_create_today_log
 
 
 class CheckInView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        today = timezone.localdate()
+        log, _ = get_or_create_today_log(request.user)
 
-        try:
-            log = MonitoringLog.objects.get(user=request.user, date=today)
-        except MonitoringLog.DoesNotExist:
+        if log is None:
             return CustomResponse.error(
-                message='No monitoring log found for today.',
-                status_code=404,
+                message='No check-in time configured. Please set up your safety info first.',
+                status_code=400,
             )
 
         if log.status == MonitoringLog.STATUS_CHECKED_IN:
@@ -43,7 +42,7 @@ class CheckInView(APIView):
 
         check_in = CheckIn.objects.create(
             user=request.user,
-            date=today,
+            date=timezone.localdate(),
             note=note,
         )
 
@@ -65,14 +64,12 @@ class MonitoringStatusView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        today = timezone.localdate()
+        log, _ = get_or_create_today_log(request.user)
 
-        try:
-            log = MonitoringLog.objects.get(user=request.user, date=today)
-        except MonitoringLog.DoesNotExist:
+        if log is None:
             return CustomResponse.error(
-                message='No monitoring log found for today.',
-                status_code=404,
+                message='No check-in time configured. Please set up your safety info first.',
+                status_code=400,
             )
 
         serializer = MonitoringStatusSerializer(log)

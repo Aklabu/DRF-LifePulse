@@ -32,11 +32,11 @@ def create_daily_monitoring_logs():
             continue
 
         check_in_time = user.safety_info.check_in_time
-        # Build deadline as today's date + check_in_time + 6 hours
+        # Build deadline as today's date + check_in_time + 8 hours
         scheduled_dt = timezone.make_aware(
             datetime.combine(today, check_in_time)
         )
-        deadline = scheduled_dt + timedelta(hours=6)
+        deadline = scheduled_dt + timedelta(hours=8)
 
         MonitoringLog.objects.create(
             user=user,

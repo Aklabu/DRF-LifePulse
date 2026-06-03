@@ -43,6 +43,7 @@ class MonitoringLog(models.Model):
     scheduled_check_in_time = models.TimeField()
     deadline = models.DateTimeField()
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=STATUS_PENDING)
+    sleep_mode = models.BooleanField(default=False)
     notified = models.BooleanField(default=False)
     notified_at = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

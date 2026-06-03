@@ -5,8 +5,8 @@ from .models import CheckIn, MonitoringLog, NotificationLog
 
 @admin.register(MonitoringLog)
 class MonitoringLogAdmin(admin.ModelAdmin):
-    list_display = ['user', 'date', 'status', 'notified', 'deadline', 'notified_at']
-    list_filter = ['status', 'date', 'notified']
+    list_display = ['user', 'date', 'status', 'sleep_mode', 'notified', 'deadline', 'notified_at']
+    list_filter = ['status', 'date', 'notified', 'sleep_mode']
     search_fields = ['user__email', 'user__name']
     ordering = ['-date']
     readonly_fields = ['created_at', 'updated_at']

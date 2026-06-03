@@ -65,6 +65,7 @@ def detect_overdue_checkins():
         status=MonitoringLog.STATUS_PENDING,
         deadline__lte=now,
         notified=False,
+        sleep_mode=False,
     )
 
     count = 0

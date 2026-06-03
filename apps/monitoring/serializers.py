@@ -19,10 +19,9 @@ class MonitoringStatusSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MonitoringLog
-        fields = ['date', 'scheduled_check_in_time', 'deadline', 'status', 'checked_in_at']
+        fields = ['date', 'scheduled_check_in_time', 'deadline', 'status', 'sleep_mode', 'checked_in_at']
 
     def get_checked_in_at(self, obj):
-        # Return the timestamp of the check-in if status is checked_in
         if obj.status == MonitoringLog.STATUS_CHECKED_IN:
             check_in = obj.user.check_ins.filter(date=obj.date).order_by('-checked_in_at').first()
             if check_in:

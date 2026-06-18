@@ -85,9 +85,14 @@ def notify_trusted_contacts(monitoring_log_id: str):
     Triggered by detect_overdue_checkins.
     Sends SMS to all trusted contacts, creates NotificationLog entries,
     and marks the MonitoringLog as notified.
+
+    SMS alerts are limited to 2 consecutive missed days. If the user has
+    already missed 2 or more days in a row before today, no SMS is sent.
+    The counter resets when the user checks in.
     """
     from .models import MonitoringLog, NotificationLog
     from .services import send_sms, compose_alert_message
+    from django.utils import timezone
 
     try:
         log = MonitoringLog.objects.select_related(
@@ -98,6 +103,44 @@ def notify_trusted_contacts(monitoring_log_id: str):
         return
 
     user = log.user
+
+    # Consecutive miss check
+    # Count how many days in a row (before today) the user was overdue/notified
+    # without any check_in in between.
+    consecutive_misses = 0
+    check_date = log.date
+
+    while True:
+        from datetime import timedelta
+        check_date = check_date - timedelta(days=1)
+        previous_log = MonitoringLog.objects.filter(
+            user=user,
+            date=check_date,
+        ).first()
+
+        if not previous_log:
+            break
+        if previous_log.status == MonitoringLog.STATUS_CHECKED_IN:
+            break  # Chain broken by a successful check-in
+        if previous_log.status == MonitoringLog.STATUS_OVERDUE and previous_log.notified:
+            consecutive_misses += 1
+        else:
+            break
+
+    # Current day counts as miss #1. If we already have 2+ previous consecutive
+    # misses, this would be miss #3 or beyond — skip the SMS.
+    if consecutive_misses >= 2:
+        logger.info(
+            f'notify_trusted_contacts: skipping SMS for {user.email} — '
+            f'{consecutive_misses + 1} consecutive misses (limit is 2)'
+        )
+        # Still mark notified so the task doesn't keep retrying
+        log.notified = True
+        log.notified_at = timezone.now()
+        log.save(update_fields=['notified', 'notified_at', 'updated_at'])
+        return
+
+
     safety_info = getattr(user, 'safety_info', None)
 
     if not safety_info:
@@ -126,4 +169,7 @@ def notify_trusted_contacts(monitoring_log_id: str):
     log.notified_at = timezone.now()
     log.save(update_fields=['notified', 'notified_at', 'updated_at'])
 
-    logger.info(f'notify_trusted_contacts: notified {contacts.count()} contacts for user {user.email}')
+    logger.info(
+        f'notify_trusted_contacts: notified {contacts.count()} contacts for {user.email} '
+        f'(consecutive miss #{consecutive_misses + 1})'
+    )

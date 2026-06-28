@@ -104,6 +104,16 @@ def notify_trusted_contacts(monitoring_log_id: str):
 
     user = log.user
 
+    # Skip SMS if the user is not currently logged in
+    if not user.is_logged_in:
+        logger.info(
+            f'notify_trusted_contacts: skipping SMS for {user.email} — user is logged out'
+        )
+        log.notified = True
+        log.notified_at = timezone.now()
+        log.save(update_fields=['notified', 'notified_at', 'updated_at'])
+        return
+
     # Consecutive miss check
     # Count how many days in a row (before today) the user was overdue/notified
     # without any check_in in between.

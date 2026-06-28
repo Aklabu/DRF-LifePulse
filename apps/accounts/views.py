@@ -48,6 +48,8 @@ class SignupView(APIView):
                 name=data['name'],
                 phone_number=data['phone_number'],
             )
+            user.is_logged_in = True
+            user.save(update_fields=['is_logged_in'])
             SafetyInfo.objects.create(user=user, **data['safety_info'])
             for contact_data in data['trusted_contacts']:
                 TrustedContact.objects.create(user=user, **contact_data)
@@ -78,6 +80,8 @@ class SigninView(APIView):
             )
 
         user = serializer.validated_data['user']
+        user.is_logged_in = True
+        user.save(update_fields=['is_logged_in'])
         tokens = get_tokens_for_user(user)
         profile = UserProfileSerializer(user, context={'request': request}).data
 
@@ -101,6 +105,8 @@ class LogoutView(APIView):
             )
 
         BlacklistedToken.objects.create(token=serializer.validated_data['refresh_token'])
+        request.user.is_logged_in = False
+        request.user.save(update_fields=['is_logged_in'])
         return CustomResponse.success(message='Logged out successfully.')
 
 

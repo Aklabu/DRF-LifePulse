@@ -158,3 +158,13 @@ class ProfileUpdateSerializer(serializers.Serializer):
         if User.objects.filter(phone_number=value).exclude(pk=user.pk).exists():
             raise serializers.ValidationError('This phone number is already in use.')
         return value
+
+
+class DeleteAccountSerializer(serializers.Serializer):
+    password = serializers.CharField(write_only=True)
+
+    def validate_password(self, value):
+        user = self.context['request'].user
+        if not user.check_password(value):
+            raise serializers.ValidationError('Incorrect password.')
+        return value

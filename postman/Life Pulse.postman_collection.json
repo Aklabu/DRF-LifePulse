@@ -2365,6 +2365,44 @@
               "body": "{\n    \"success\": true,\n    \"statusCode\": 200,\n    \"message\": \"Pet deleted successfully.\",\n    \"timestamp\": \"2026-05-21T20:03:11.521394+00:00\",\n    \"data\": null,\n    \"errors\": null\n}"
             }
           ]
+        },
+        {
+          "name": "delete user account",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"password\": \"your_password\"\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/accounts/delete-account/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "accounts",
+                "delete-account",
+                ""
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },

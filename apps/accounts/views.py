@@ -14,6 +14,7 @@ from .serializers import (
     ChangePasswordSerializer, ForgotPasswordSerializer, VerifyOTPSerializer,
     ResendOTPSerializer, ResetPasswordSerializer, ProfileUpdateSerializer,
     UserProfileSerializer, TrustedContactSerializer, PetSerializer,
+    DeleteAccountSerializer,
 )
 
 
@@ -489,3 +490,26 @@ class PetDetailView(APIView):
 
         pet.delete()
         return CustomResponse.success(message='Pet deleted successfully.')
+
+
+# Permanently deletes the authenticated user's account and all associated data after password verification
+class DeleteAccountView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request):
+        serializer = DeleteAccountSerializer(data=request.data, context={'request': request})
+        if not serializer.is_valid():
+            return CustomResponse.error(
+                message='Validation failed.',
+                status_code=400,
+                errors=serializer.errors,
+            )
+
+        # Permanently delete the user — cascades to all related data
+        # (SafetyInfo, TrustedContacts, Pets, MonitoringLogs, CheckIns, NotificationLogs)
+        request.user.delete()
+
+        return CustomResponse.success(
+            message='Account permanently deleted.',
+            status_code=200,
+        )

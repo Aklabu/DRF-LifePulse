@@ -1,6 +1,11 @@
+import os
 import random
 from django.db import transaction
 from django.utils import timezone
+from django.views import View
+from django.shortcuts import render
+from django.contrib import messages
+from django.core.signing import SignatureExpired, BadSignature
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -8,7 +13,7 @@ from rest_framework_simplejwt.exceptions import TokenError
 
 from utils.response import CustomResponse
 from .models import User, SafetyInfo, TrustedContact, Pet, OTPVerification, BlacklistedToken
-from .services import send_otp_email
+from .services import send_otp_email, generate_deletion_token, verify_deletion_token, send_deletion_confirmation_email
 from .serializers import (
     SignupSerializer, SigninSerializer, LogoutSerializer, TokenRefreshSerializer,
     ChangePasswordSerializer, ForgotPasswordSerializer, VerifyOTPSerializer,
@@ -513,3 +518,71 @@ class DeleteAccountView(APIView):
             message='Account permanently deleted.',
             status_code=200,
         )
+
+
+class RequestAccountDeletionView(View):
+    # Step 1 — User submits their email to request account deletion.
+    template_name = 'accounts/request_deletion.html'
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        email = request.POST.get('email', '').strip().lower()
+
+        if not email:
+            messages.error(request, 'Please enter a valid email address.')
+            return render(request, self.template_name)
+
+        # Attempt to find the account — but never reveal the result to the user
+        try:
+            user = User.objects.get(email=email, is_active=True)
+            token = generate_deletion_token(user.email)
+            try:
+                send_deletion_confirmation_email(request, user.email, token)
+            except Exception:
+                pass  # Log silently; don't expose mail errors to the user
+        except User.DoesNotExist:
+            pass  # Intentionally do nothing — no information leakage
+
+        # Always show the same neutral success message
+        messages.success(
+            request,
+            'If an account with that email exists, a confirmation link has been sent. '
+            'Please check your inbox (and spam folder).',
+        )
+        return render(request, self.template_name)
+
+
+class ConfirmAccountDeletionView(View):
+    # Step 2 — User clicks the link in their email to confirm deletion.
+
+    def get(self, request, token: str):
+        try:
+            email = verify_deletion_token(token)
+        except SignatureExpired:
+            return render(
+                request,
+                'accounts/deletion_error.html',
+                {'error_message': 'This deletion link has expired. Please submit a new request.'},
+            )
+        except BadSignature:
+            return render(
+                request,
+                'accounts/deletion_error.html',
+                {'error_message': 'This deletion link is invalid or has already been used.'},
+            )
+
+        try:
+            user = User.objects.get(email=email, is_active=True)
+        except User.DoesNotExist:
+            return render(
+                request,
+                'accounts/deletion_error.html',
+                {'error_message': 'No active account was found for this link.'},
+            )
+
+        # Hard-delete the user — cascades to all related data
+        user.delete()
+
+        return render(request, 'accounts/deletion_success.html')

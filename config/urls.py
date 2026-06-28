@@ -18,11 +18,16 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from apps.accounts.views import RequestAccountDeletionView, ConfirmAccountDeletionView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/accounts/', include('apps.accounts.urls')),
-    path('api/monitoring/', include('apps.monitoring.urls')),    
+    path('api/monitoring/', include('apps.monitoring.urls')),
+
+    # Account deletion web flow
+    path('delete-account/', RequestAccountDeletionView.as_view(), name='request-account-deletion'),
+    path('delete-account/confirm/<str:token>/', ConfirmAccountDeletionView.as_view(), name='confirm-account-deletion'),
 ]
 
 if settings.DEBUG:

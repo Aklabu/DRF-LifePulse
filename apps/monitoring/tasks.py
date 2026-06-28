@@ -127,12 +127,12 @@ def notify_trusted_contacts(monitoring_log_id: str):
         else:
             break
 
-    # Current day counts as miss #1. If we already have 2+ previous consecutive
-    # misses, this would be miss #3 or beyond — skip the SMS.
-    if consecutive_misses >= 2:
+    # Current day counts as miss #1. If we already have 1+ previous consecutive
+    # misses, this would be miss #2 or beyond — skip the SMS.
+    if consecutive_misses >= 1:
         logger.info(
             f'notify_trusted_contacts: skipping SMS for {user.email} — '
-            f'{consecutive_misses + 1} consecutive misses (limit is 2)'
+            f'{consecutive_misses + 1} consecutive misses (limit is 1)'
         )
         # Still mark notified so the task doesn't keep retrying
         log.notified = True

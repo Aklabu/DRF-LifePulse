@@ -2688,6 +2688,165 @@
           ]
         }
       ]
+    },
+    {
+      "name": "webview",
+      "item": [
+        {
+          "name": "privacy-policy",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}privacy-policy/",
+              "host": [
+                "{{base_url}}privacy-policy"
+              ],
+              "path": [
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}privacy-policy/",
+                  "host": [
+                    "{{base_url}}privacy-policy"
+                  ],
+                  "path": [
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Sun, 28 Jun 2026 22:14:18 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.12.5"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/html; charset=utf-8"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "8021"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "<!DOCTYPE html>\n<html lang=\"en\">\n    <head>\n        <meta charset=\"UTF-8\">\n        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n        <title>Privacy Policy — Life Pulse</title>\n        <style>\n        * { box-sizing: border-box; margin: 0; padding: 0; }\n        body {\n            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;\n            background: #ffffff;\n            color: #333;\n            line-height: 1.8;\n            padding: 40px 20px 80px;\n        }\n        .container {\n            max-width: 680px;\n            margin: 0 auto;\n        }\n        .app-name {\n            font-size: 18px;\n            font-weight: 700;\n            color: #e74c3c;\n            margin-bottom: 24px;\n        }\n        h1 {\n            font-size: 26px;\n            font-weight: 700;\n            color: #111;\n            margin-bottom: 6px;\n        }\n        .meta {\n            font-size: 13px;\n            color: #999;\n            margin-bottom: 32px;\n        }\n        h2 {\n            font-size: 16px;\n            font-weight: 700;\n            color: #111;\n            margin-top: 32px;\n            margin-bottom: 10px;\n        }\n        p {\n            font-size: 14px;\n            color: #444;\n            margin-bottom: 12px;\n        }\n        ul {\n            padding-left: 18px;\n            margin-bottom: 12px;\n        }\n        ul li {\n            font-size: 14px;\n            color: #444;\n            margin-bottom: 6px;\n        }\n        hr {\n            border: none;\n            border-top: 1px solid #efefef;\n            margin: 36px 0;\n        }\n        .footer {\n            margin-top: 48px;\n            font-size: 13px;\n            color: #aaa;\n        }\n        a { color: #e74c3c; text-decoration: none; }\n        a:hover { text-decoration: underline; }\n    </style>\n    </head>\n    <body>\n        <div class=\"container\">\n            <div class=\"app-name\">Life Pulse</div>\n            <h1>Privacy Policy</h1>\n            <p class=\"meta\">Last updated: June 2026</p>\n            <p>\n        Life Pulse is a personal safety monitoring app for people living alone or temporarily alone.\n        This Privacy Policy explains what information we collect, how we use it, and your rights\n        regarding your data. By using Life Pulse, you agree to the practices described here.\n    </p>\n            <hr>\n            <h2>1. Information We Collect</h2>\n            <p>We collect the following information when you use Life Pulse:</p>\n            <ul>\n                <li>\n                    <strong>Account information</strong> — your name, email address, and phone number\n                </li>\n                <li>\n                    <strong>Password</strong> — stored as a secure hash, never in plain text\n                </li>\n                <li>\n                    <strong>Safety information</strong> — your living status, home address, property access notes, and preferred daily check-in time\n                </li>\n                <li>\n                    <strong>Trusted contacts</strong> — names, relationships, phone numbers, and optional emails of up to 5 emergency contacts you designate\n                </li>\n                <li>\n                    <strong>Pet information</strong> — pet name, breed, age, optional photo, and optional caregiver contact details\n                </li>\n                <li>\n                    <strong>Monitoring activity</strong> — daily check-in logs, check-in timestamps, notes, sleep mode activations, and SMS notification records\n                </li>\n                <li>\n                    <strong>Authentication data</strong> — session tokens and OTP codes used for login and password reset\n                </li>\n            </ul>\n            <h2>2. How We Use Your Information</h2>\n            <p>We use the information we collect to:</p>\n            <ul>\n                <li>Create and manage your account securely</li>\n                <li>Schedule and track your daily check-ins</li>\n                <li>Detect when you have missed a check-in past your deadline</li>\n                <li>Send emergency SMS alerts to your trusted contacts when a missed check-in is detected</li>\n                <li>Record whether SMS notifications were successfully delivered</li>\n                <li>Allow you to manage your profile, contacts, pets, and safety settings</li>\n            </ul>\n            <h2>3. Emergency SMS Alerts</h2>\n            <p>\n        When you miss a check-in and your deadline passes, Life Pulse automatically sends an SMS\n        to your trusted contacts. The message includes your name, scheduled check-in time,\n        missed deadline, home address, access notes, and pet details.\n    </p>\n            <p>\n        SMS messages are delivered via \n                <strong>Twilio</strong>, a third-party messaging provider.\n        Your trusted contacts' phone numbers and the message content are transmitted to Twilio\n        for this purpose. Twilio's own privacy policy governs how they handle this data.\n            </p>\n            <p>\n        Alerts are sent on the first consecutive missed day only. No further alerts are sent\n        until you check in again. Alerts are also suppressed when sleep mode is active or\n        when you are logged out of the app.\n    </p>\n            <h2>4. Automated Processing</h2>\n            <p>\n        Life Pulse uses automated background processes to monitor your check-in activity. Every day\n        at midnight, a monitoring record is created for your account. Every 15 minutes, the system\n        checks whether your check-in deadline has passed. If it has, an SMS alert is triggered\n        automatically. No human reviews your check-in activity as part of this process.\n    </p>\n            <h2>5. Data Sharing</h2>\n            <p>We do not sell your personal data. We share it only in these circumstances:</p>\n            <ul>\n                <li>\n                    <strong>Twilio</strong> — receives your contacts' phone numbers and SMS message content solely to deliver emergency alerts\n                </li>\n                <li>\n                    <strong>Your trusted contacts</strong> — receive an SMS with your safety details when an alert is triggered\n                </li>\n                <li>\n                    <strong>Legal requirements</strong> — we may disclose data if required by law or to protect the safety of individuals\n                </li>\n            </ul>\n            <h2>6. Data Retention</h2>\n            <p>\n        We retain your data for as long as your account is active. OTP codes are deleted within\n        5 minutes of generation. When you delete your account, all associated data is permanently\n        and immediately removed — including your safety info, trusted contacts, pets, monitoring\n        logs, check-in history, and notification records.\n    </p>\n            <h2>7. Account Deletion</h2>\n            <p>\n        You can permanently delete your account at any time through the app or by visiting\n        \n                <a href=\"/delete-account/\">/delete-account/</a>.\n        You will be asked to confirm your identity before deletion. This action is irreversible.\n            </p>\n            <h2>8. Security</h2>\n            <p>\n        We take reasonable measures to protect your data. Passwords are stored using industry-standard\n        hashing. API access is secured with JWT authentication. Session tokens are invalidated on logout.\n        Password reset uses time-limited OTP codes that expire after 5 minutes.\n    </p>\n            <h2>9. Your Rights</h2>\n            <p>You have the right to:</p>\n            <ul>\n                <li>Access and update your profile, safety information, trusted contacts, and pets at any time</li>\n                <li>Enable sleep mode to pause emergency monitoring</li>\n                <li>Permanently delete your account and all associated data</li>\n                <li>Contact us with questions about your data</li>\n            </ul>\n            <h2>10. Children's Privacy</h2>\n            <p>\n        Life Pulse is not intended for use by anyone under the age of 18. We do not knowingly\n        collect personal information from minors.\n    </p>\n            <h2>11. Changes to This Policy</h2>\n            <p>\n        We may update this Privacy Policy from time to time. We encourage you to review it\n        periodically. Continued use of Life Pulse after any changes constitutes acceptance\n        of the updated policy.\n    </p>\n            <h2>12. Contact Us</h2>\n            <p>\n        If you have any questions or concerns about this Privacy Policy, please contact us at\n        \n                <a href=\"mailto:quantumgardenapps@gmail.com\">quantumgardenapps@gmail.com</a>.\n            </p>\n            <div class=\"footer\">\n        &copy; 2026 Life Pulse &nbsp;·&nbsp;\n        \n                <a href=\"/delete-account/\">Delete My Account</a>\n            </div>\n        </div>\n    </body>\n</html>"
+            }
+          ]
+        },
+        {
+          "name": "delete-account",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}delete-account/",
+              "host": [
+                "{{base_url}}delete-account"
+              ],
+              "path": [
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}delete-account/",
+                  "host": [
+                    "{{base_url}}delete-account"
+                  ],
+                  "path": [
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Sun, 28 Jun 2026 22:16:11 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.12.5"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/html; charset=utf-8"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Cookie"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "3390"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Set-Cookie",
+                  "value": "csrftoken=Ru6WrjCoDKRKvaSE2GLXtOo9G0CTMKNL; expires=Sun, 27 Jun 2027 22:16:11 GMT; Max-Age=31449600; Path=/; SameSite=Lax"
+                }
+              ],
+              "cookie": [],
+              "body": "<!DOCTYPE html>\n<html lang=\"en\">\n    <head>\n        <meta charset=\"UTF-8\">\n        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n        <title>Delete Account — Life Pulse</title>\n        <style>\n        * { box-sizing: border-box; margin: 0; padding: 0; }\n        body {\n            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;\n            background: #f5f5f5;\n            display: flex;\n            align-items: center;\n            justify-content: center;\n            min-height: 100vh;\n            padding: 20px;\n        }\n        .card {\n            background: #fff;\n            border-radius: 12px;\n            padding: 40px;\n            width: 100%;\n            max-width: 440px;\n            box-shadow: 0 2px 16px rgba(0,0,0,0.08);\n        }\n        h1 { font-size: 22px; color: #1a1a1a; margin-bottom: 8px; }\n        p.subtitle { font-size: 14px; color: #666; margin-bottom: 28px; line-height: 1.5; }\n        label { display: block; font-size: 14px; font-weight: 500; color: #333; margin-bottom: 6px; }\n        input[type=\"email\"] {\n            width: 100%;\n            padding: 10px 14px;\n            border: 1px solid #ddd;\n            border-radius: 8px;\n            font-size: 15px;\n            outline: none;\n            transition: border-color 0.2s;\n        }\n        input[type=\"email\"]:focus { border-color: #e74c3c; }\n        button {\n            width: 100%;\n            padding: 12px;\n            background: #e74c3c;\n            color: #fff;\n            border: none;\n            border-radius: 8px;\n            font-size: 15px;\n            font-weight: 600;\n            cursor: pointer;\n            margin-top: 20px;\n            transition: background 0.2s;\n        }\n        button:hover { background: #c0392b; }\n        .messages { margin-bottom: 20px; }\n        .msg {\n            padding: 10px 14px;\n            border-radius: 8px;\n            font-size: 14px;\n            margin-bottom: 8px;\n        }\n        .msg.success { background: #eafaf1; color: #1e8449; border: 1px solid #a9dfbf; }\n        .msg.error   { background: #fdf2f2; color: #c0392b; border: 1px solid #f5c6cb; }\n        .warning-note {\n            margin-top: 20px;\n            padding: 12px 14px;\n            background: #fef9e7;\n            border: 1px solid #f9e79f;\n            border-radius: 8px;\n            font-size: 13px;\n            color: #7d6608;\n            line-height: 1.5;\n        }\n    </style>\n    </head>\n    <body>\n        <div class=\"card\">\n            <h1>Delete Your Account</h1>\n            <p class=\"subtitle\">\n            Enter your email address and we'll send you a confirmation link.\n            Your account and all associated data will be permanently removed.\n        </p>\n            <form method=\"post\">\n                <input type=\"hidden\" name=\"csrfmiddlewaretoken\" value=\"UtaLHvd3IWIrnGpdZZIgUxNXQdt9pnT2BN6xYEFhbwp1IG7HRvj3db1Wm3VS1XwD\">\n                <label for=\"email\">Email address</label>\n                <input type=\"email\" id=\"email\" name=\"email\" placeholder=\"you@example.com\" required>\n                <button type=\"submit\">Send Confirmation Link</button>\n            </form>\n            <div class=\"warning-note\">\n            ⚠️ This action is \n                <strong>permanent and irreversible</strong>. All your data including\n            safety info, trusted contacts, pets, and monitoring history will be deleted.\n            </div>\n        </div>\n    </body>\n</html>"
+            }
+          ]
+        }
+      ]
     }
   ],
   "event": [

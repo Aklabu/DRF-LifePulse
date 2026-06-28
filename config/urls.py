@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import TemplateView
 from django.conf import settings
 from django.conf.urls.static import static
 from apps.accounts.views import RequestAccountDeletionView, ConfirmAccountDeletionView
@@ -28,6 +29,9 @@ urlpatterns = [
     # Account deletion web flow
     path('delete-account/', RequestAccountDeletionView.as_view(), name='request-account-deletion'),
     path('delete-account/confirm/<str:token>/', ConfirmAccountDeletionView.as_view(), name='confirm-account-deletion'),
+
+    # Privacy policy page
+    path('privacy-policy/', TemplateView.as_view(template_name='privacy_policy.html'), name='privacy-policy'),
 ]
 
 if settings.DEBUG:

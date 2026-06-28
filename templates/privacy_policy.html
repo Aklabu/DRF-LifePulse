@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy — Life Pulse</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #ffffff;
+            color: #333;
+            line-height: 1.8;
+            padding: 40px 20px 80px;
+        }
+        .container {
+            max-width: 680px;
+            margin: 0 auto;
+        }
+        .app-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #e74c3c;
+            margin-bottom: 24px;
+        }
+        h1 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #111;
+            margin-bottom: 6px;
+        }
+        .meta {
+            font-size: 13px;
+            color: #999;
+            margin-bottom: 32px;
+        }
+        h2 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #111;
+            margin-top: 32px;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 14px;
+            color: #444;
+            margin-bottom: 12px;
+        }
+        ul {
+            padding-left: 18px;
+            margin-bottom: 12px;
+        }
+        ul li {
+            font-size: 14px;
+            color: #444;
+            margin-bottom: 6px;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid #efefef;
+            margin: 36px 0;
+        }
+        .footer {
+            margin-top: 48px;
+            font-size: 13px;
+            color: #aaa;
+        }
+        a { color: #e74c3c; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="app-name">Life Pulse</div>
+
+    <h1>Privacy Policy</h1>
+    <p class="meta">Last updated: June 2026</p>
+
+    <p>
+        Life Pulse is a personal safety monitoring app for people living alone or temporarily alone.
+        This Privacy Policy explains what information we collect, how we use it, and your rights
+        regarding your data. By using Life Pulse, you agree to the practices described here.
+    </p>
+
+    <hr>
+
+    <h2>1. Information We Collect</h2>
+    <p>We collect the following information when you use Life Pulse:</p>
+    <ul>
+        <li><strong>Account information</strong> — your name, email address, and phone number</li>
+        <li><strong>Password</strong> — stored as a secure hash, never in plain text</li>
+        <li><strong>Safety information</strong> — your living status, home address, property access notes, and preferred daily check-in time</li>
+        <li><strong>Trusted contacts</strong> — names, relationships, phone numbers, and optional emails of up to 5 emergency contacts you designate</li>
+        <li><strong>Pet information</strong> — pet name, breed, age, optional photo, and optional caregiver contact details</li>
+        <li><strong>Monitoring activity</strong> — daily check-in logs, check-in timestamps, notes, sleep mode activations, and SMS notification records</li>
+        <li><strong>Authentication data</strong> — session tokens and OTP codes used for login and password reset</li>
+    </ul>
+
+    <h2>2. How We Use Your Information</h2>
+    <p>We use the information we collect to:</p>
+    <ul>
+        <li>Create and manage your account securely</li>
+        <li>Schedule and track your daily check-ins</li>
+        <li>Detect when you have missed a check-in past your deadline</li>
+        <li>Send emergency SMS alerts to your trusted contacts when a missed check-in is detected</li>
+        <li>Record whether SMS notifications were successfully delivered</li>
+        <li>Allow you to manage your profile, contacts, pets, and safety settings</li>
+    </ul>
+
+    <h2>3. Emergency SMS Alerts</h2>
+    <p>
+        When you miss a check-in and your deadline passes, Life Pulse automatically sends an SMS
+        to your trusted contacts. The message includes your name, scheduled check-in time,
+        missed deadline, home address, access notes, and pet details.
+    </p>
+    <p>
+        SMS messages are delivered via <strong>Twilio</strong>, a third-party messaging provider.
+        Your trusted contacts' phone numbers and the message content are transmitted to Twilio
+        for this purpose. Twilio's own privacy policy governs how they handle this data.
+    </p>
+    <p>
+        Alerts are sent on the first consecutive missed day only. No further alerts are sent
+        until you check in again. Alerts are also suppressed when sleep mode is active or
+        when you are logged out of the app.
+    </p>
+
+    <h2>4. Automated Processing</h2>
+    <p>
+        Life Pulse uses automated background processes to monitor your check-in activity. Every day
+        at midnight, a monitoring record is created for your account. Every 15 minutes, the system
+        checks whether your check-in deadline has passed. If it has, an SMS alert is triggered
+        automatically. No human reviews your check-in activity as part of this process.
+    </p>
+
+    <h2>5. Data Sharing</h2>
+    <p>We do not sell your personal data. We share it only in these circumstances:</p>
+    <ul>
+        <li><strong>Twilio</strong> — receives your contacts' phone numbers and SMS message content solely to deliver emergency alerts</li>
+        <li><strong>Your trusted contacts</strong> — receive an SMS with your safety details when an alert is triggered</li>
+        <li><strong>Legal requirements</strong> — we may disclose data if required by law or to protect the safety of individuals</li>
+    </ul>
+
+    <h2>6. Data Retention</h2>
+    <p>
+        We retain your data for as long as your account is active. OTP codes are deleted within
+        5 minutes of generation. When you delete your account, all associated data is permanently
+        and immediately removed — including your safety info, trusted contacts, pets, monitoring
+        logs, check-in history, and notification records.
+    </p>
+
+    <h2>7. Account Deletion</h2>
+    <p>
+        You can permanently delete your account at any time through the app or by visiting
+        <a href="/delete-account/">/delete-account/</a>.
+        You will be asked to confirm your identity before deletion. This action is irreversible.
+    </p>
+
+    <h2>8. Security</h2>
+    <p>
+        We take reasonable measures to protect your data. Passwords are stored using industry-standard
+        hashing. API access is secured with JWT authentication. Session tokens are invalidated on logout.
+        Password reset uses time-limited OTP codes that expire after 5 minutes.
+    </p>
+
+    <h2>9. Your Rights</h2>
+    <p>You have the right to:</p>
+    <ul>
+        <li>Access and update your profile, safety information, trusted contacts, and pets at any time</li>
+        <li>Enable sleep mode to pause emergency monitoring</li>
+        <li>Permanently delete your account and all associated data</li>
+        <li>Contact us with questions about your data</li>
+    </ul>
+
+    <h2>10. Children's Privacy</h2>
+    <p>
+        Life Pulse is not intended for use by anyone under the age of 18. We do not knowingly
+        collect personal information from minors.
+    </p>
+
+    <h2>11. Changes to This Policy</h2>
+    <p>
+        We may update this Privacy Policy from time to time. We encourage you to review it
+        periodically. Continued use of Life Pulse after any changes constitutes acceptance
+        of the updated policy.
+    </p>
+
+    <h2>12. Contact Us</h2>
+    <p>
+        If you have any questions or concerns about this Privacy Policy, please contact us at
+        <a href="mailto:quantumgardenapps@gmail.com">quantumgardenapps@gmail.com</a>.
+    </p>
+
+    <div class="footer">
+        &copy; 2026 Life Pulse &nbsp;·&nbsp;
+        <a href="/delete-account/">Delete My Account</a>
+    </div>
+
+</div>
+</body>
+</html>

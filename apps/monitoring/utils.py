@@ -1,14 +1,27 @@
+import zoneinfo
 from datetime import datetime, timedelta
 from django.utils import timezone
 
-def calculate_next_check_in_target(anchor_time, frequency_hours, from_time=None):
+def calculate_next_check_in_target(anchor_time, frequency_hours, from_time=None, user_timezone='UTC'):
     if from_time is None:
         from_time = timezone.now()
 
-    # Create today's anchor datetime
-    anchor_datetime_today = timezone.make_aware(
-        datetime.combine(from_time.date(), anchor_time)
+    try:
+        tz = zoneinfo.ZoneInfo(user_timezone)
+    except Exception:
+        tz = zoneinfo.ZoneInfo('UTC')
+
+    # Convert from_time to the user's local timezone to get the correct "today's date"
+    local_from_time = from_time.astimezone(tz)
+
+    # Create today's anchor datetime in the user's local timezone
+    local_anchor_datetime_today = timezone.make_aware(
+        datetime.combine(local_from_time.date(), anchor_time),
+        timezone=tz
     )
+
+    # Convert back to UTC for the database and candidate calculation
+    anchor_datetime_today = local_anchor_datetime_today.astimezone(timezone.utc)
 
     # Compute all possible targets within a 48 hour window centered around today
     # to ensure we find the immediate next one safely.

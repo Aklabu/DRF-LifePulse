@@ -54,7 +54,8 @@ class CheckInView(APIView):
         new_target = calculate_next_check_in_target(
             safety_info.anchor_time, 
             safety_info.check_in_frequency, 
-            from_time=timezone.now()
+            from_time=max(timezone.now(), log.target_time),
+            user_timezone=safety_info.timezone
         )
         safety_info.next_check_in_target = new_target
         safety_info.save(update_fields=['next_check_in_target'])

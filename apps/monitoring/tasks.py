@@ -26,6 +26,7 @@ def detect_overdue_checkins():
     users = User.objects.filter(
         is_active=True,
         safety_info__next_check_in_target__isnull=False,
+        safety_info__is_monitoring_active=True,
     ).select_related('safety_info')
 
     count = 0
@@ -59,12 +60,8 @@ def detect_overdue_checkins():
 def notify_trusted_contacts(monitoring_log_id: str):
     """
     Triggered by detect_overdue_checkins.
-    Sends SMS to all trusted contacts, creates NotificationLog entries,
-    and marks the MonitoringLog as notified.
-
-    SMS alerts are limited to 2 consecutive missed days. If the user has
-    already missed 2 or more days in a row before today, no SMS is sent.
-    The counter resets when the user checks in.
+    Sends SMS to all trusted contacts immediately on the first missed interval.
+    After sending the SMS, the user's monitoring is paused (is_monitoring_active = False).
     """
     from .models import MonitoringLog, NotificationLog
     from .services import send_sms, compose_alert_message
@@ -89,42 +86,6 @@ def notify_trusted_contacts(monitoring_log_id: str):
         log.notified_at = timezone.now()
         log.save(update_fields=['notified', 'notified_at', 'updated_at'])
         return
-
-    # Consecutive miss check
-    consecutive_misses = 0
-    check_target = log.target_time
-    frequency = user.safety_info.check_in_frequency if user.safety_info else 24
-
-    while True:
-        from datetime import timedelta
-        check_target = check_target - timedelta(hours=frequency)
-        previous_log = MonitoringLog.objects.filter(
-            user=user,
-            target_time=check_target,
-        ).first()
-
-        if not previous_log:
-            break
-        if previous_log.status == MonitoringLog.STATUS_CHECKED_IN:
-            break  # Chain broken by a successful check-in
-        if previous_log.status == MonitoringLog.STATUS_OVERDUE and previous_log.notified:
-            consecutive_misses += 1
-        else:
-            break
-
-    # Current day counts as miss #1. If we already have 1+ previous consecutive
-    # misses, this would be miss #2 or beyond — skip the SMS.
-    if consecutive_misses >= 1:
-        logger.info(
-            f'notify_trusted_contacts: skipping SMS for {user.email} — '
-            f'{consecutive_misses + 1} consecutive misses (limit is 1)'
-        )
-        # Still mark notified so the task doesn't keep retrying
-        log.notified = True
-        log.notified_at = timezone.now()
-        log.save(update_fields=['notified', 'notified_at', 'updated_at'])
-        return
-
 
     safety_info = getattr(user, 'safety_info', None)
 
@@ -154,7 +115,10 @@ def notify_trusted_contacts(monitoring_log_id: str):
     log.notified_at = timezone.now()
     log.save(update_fields=['notified', 'notified_at', 'updated_at'])
 
+    # Pause monitoring so no more SMS are sent until the user reactivates by opening the app
+    safety_info.is_monitoring_active = False
+    safety_info.save(update_fields=['is_monitoring_active'])
+
     logger.info(
-        f'notify_trusted_contacts: notified {contacts.count()} contacts for {user.email} '
-        f'(consecutive miss #{consecutive_misses + 1})'
+        f'notify_trusted_contacts: notified {contacts.count()} contacts for {user.email} and paused monitoring.'
     )

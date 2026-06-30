@@ -18,6 +18,18 @@ def get_or_create_current_cycle_log(user):
     if not safety_info or not safety_info.next_check_in_target:
         return None, False
 
+    # If the user's monitoring is paused, opening the app / checking in reactivates it immediately.
+    if not safety_info.is_monitoring_active:
+        from .utils import calculate_next_check_in_target
+        safety_info.is_monitoring_active = True
+        safety_info.next_check_in_target = calculate_next_check_in_target(
+            safety_info.anchor_time,
+            safety_info.check_in_frequency,
+            from_time=timezone.now(),
+            user_timezone=safety_info.timezone
+        )
+        safety_info.save(update_fields=['is_monitoring_active', 'next_check_in_target'])
+
     target_time = safety_info.next_check_in_target
 
     # Fast path

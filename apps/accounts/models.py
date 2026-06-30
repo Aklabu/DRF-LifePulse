@@ -49,6 +49,8 @@ class SafetyInfo(models.Model):
     anchor_time = models.TimeField()
     check_in_frequency = models.IntegerField(choices=[(12, '12 Hours'), (24, '24 Hours')], default=24)
     next_check_in_target = models.DateTimeField(null=True, blank=True)
+    is_monitoring_active = models.BooleanField(default=True)
+    timezone = models.CharField(max_length=100, default='UTC')
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

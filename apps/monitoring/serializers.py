@@ -11,7 +11,7 @@ class CheckInSerializer(serializers.ModelSerializer):
 class CheckInResponseSerializer(serializers.ModelSerializer):
     class Meta:
         model = CheckIn
-        fields = ['checked_in_at', 'date', 'note']
+        fields = ['checked_in_at', 'note']
 
 
 class MonitoringStatusSerializer(serializers.ModelSerializer):
@@ -19,11 +19,11 @@ class MonitoringStatusSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MonitoringLog
-        fields = ['date', 'scheduled_check_in_time', 'deadline', 'status', 'sleep_mode', 'checked_in_at']
+        fields = ['target_time', 'deadline', 'status', 'sleep_mode', 'checked_in_at']
 
     def get_checked_in_at(self, obj):
         if obj.status == MonitoringLog.STATUS_CHECKED_IN:
-            check_in = obj.user.check_ins.filter(date=obj.date).order_by('-checked_in_at').first()
+            check_in = obj.user.check_ins.order_by('-checked_in_at').first()
             if check_in:
                 return check_in.checked_in_at
         return None

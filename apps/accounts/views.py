@@ -11,6 +11,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
 
+from apps.monitoring.utils import calculate_next_check_in_target
 from utils.response import CustomResponse
 from .models import User, SafetyInfo, TrustedContact, Pet, OTPVerification, BlacklistedToken
 from .services import send_otp_email, generate_deletion_token, verify_deletion_token, send_deletion_confirmation_email
@@ -56,7 +57,19 @@ class SignupView(APIView):
             )
             user.is_logged_in = True
             user.save(update_fields=['is_logged_in'])
-            SafetyInfo.objects.create(user=user, **data['safety_info'])
+            
+            safety_info_data = data['safety_info']
+            next_target = calculate_next_check_in_target(
+                safety_info_data['anchor_time'], 
+                safety_info_data.get('check_in_frequency', 24)
+            )
+            
+            SafetyInfo.objects.create(
+                user=user, 
+                next_check_in_target=next_target,
+                **safety_info_data
+            )
+            
             for contact_data in data['trusted_contacts']:
                 TrustedContact.objects.create(user=user, **contact_data)
             for pet_data in data.get('pets', []):
@@ -331,7 +344,16 @@ class ProfileView(APIView):
         user.save()
 
         if 'safety_info' in data:
-            SafetyInfo.objects.filter(user=user).update(**data['safety_info'])
+            safety_data = data['safety_info']
+            safety_info = user.safety_info
+            
+            # Recalculate next target if anchor_time or frequency changes
+            if 'anchor_time' in safety_data or 'check_in_frequency' in safety_data:
+                new_anchor = safety_data.get('anchor_time', safety_info.anchor_time)
+                new_freq = safety_data.get('check_in_frequency', safety_info.check_in_frequency)
+                safety_data['next_check_in_target'] = calculate_next_check_in_target(new_anchor, new_freq)
+            
+            SafetyInfo.objects.filter(user=user).update(**safety_data)
 
         profile = UserProfileSerializer(user, context={'request': request}).data
         return CustomResponse.success(

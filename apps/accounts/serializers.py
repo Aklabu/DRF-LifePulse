@@ -9,6 +9,7 @@ class SafetyInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = SafetyInfo
         exclude = ['id', 'user', 'created_at', 'updated_at']
+        read_only_fields = ['next_check_in_target']
 
 
 class TrustedContactSerializer(serializers.ModelSerializer):

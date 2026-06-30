@@ -11,7 +11,6 @@ class CheckIn(models.Model):
         related_name='check_ins',
     )
     checked_in_at = models.DateTimeField(auto_now_add=True)
-    date = models.DateField()
     note = models.TextField(blank=True, default='')
 
     class Meta:
@@ -19,7 +18,7 @@ class CheckIn(models.Model):
         ordering = ['-checked_in_at']
 
     def __str__(self):
-        return f'{self.user.email} checked in on {self.date}'
+        return f'{self.user.email} checked in on {self.checked_in_at}'
 
 
 class MonitoringLog(models.Model):
@@ -39,8 +38,7 @@ class MonitoringLog(models.Model):
         on_delete=models.CASCADE,
         related_name='monitoring_logs',
     )
-    date = models.DateField()
-    scheduled_check_in_time = models.TimeField()
+    target_time = models.DateTimeField()
     deadline = models.DateTimeField()
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=STATUS_PENDING)
     sleep_mode = models.BooleanField(default=False)
@@ -51,11 +49,11 @@ class MonitoringLog(models.Model):
 
     class Meta:
         db_table = 'monitoring_log'
-        unique_together = [('user', 'date')]
-        ordering = ['-date']
+        unique_together = [('user', 'target_time')]
+        ordering = ['-target_time']
 
     def __str__(self):
-        return f'{self.user.email} — {self.date} — {self.status}'
+        return f'{self.user.email} — {self.target_time} — {self.status}'
 
 
 class NotificationLog(models.Model):

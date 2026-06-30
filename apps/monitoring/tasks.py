@@ -6,76 +6,52 @@ from django.conf import settings
 logger = logging.getLogger(__name__)
 
 
-@shared_task(name='monitoring.create_daily_monitoring_logs')
-def create_daily_monitoring_logs():
-    """
-    Runs daily at midnight.
-    Creates a MonitoringLog for every active user who has a SafetyInfo
-    with a check_in_time set. Idempotent — skips users who already have
-    a log for today.
-    """
-    from django.contrib.auth import get_user_model
-    from datetime import datetime, timedelta
-    from .models import MonitoringLog
-
-    User = get_user_model()
-    today = timezone.localdate()
-    created_count = 0
-
-    users = User.objects.filter(
-        is_active=True,
-        safety_info__check_in_time__isnull=False,
-    ).select_related('safety_info')
-
-    for user in users:
-        if MonitoringLog.objects.filter(user=user, date=today).exists():
-            continue
-
-        check_in_time = user.safety_info.check_in_time
-        # Build deadline as today's date + check_in_time + 8 hours
-        scheduled_dt = timezone.make_aware(
-            datetime.combine(today, check_in_time)
-        )
-        deadline = scheduled_dt + timedelta(hours=8)
-
-        MonitoringLog.objects.create(
-            user=user,
-            date=today,
-            scheduled_check_in_time=check_in_time,
-            deadline=deadline,
-            status=MonitoringLog.STATUS_PENDING,
-        )
-        created_count += 1
-
-    logger.info(f'create_daily_monitoring_logs: created {created_count} logs for {today}')
-    return created_count
+# create_daily_monitoring_logs has been removed as it is no longer needed in the frequency-based system.
 
 
 @shared_task(name='monitoring.detect_overdue_checkins')
 def detect_overdue_checkins():
     """
     Runs every 15 minutes.
-    Marks pending logs past their deadline as overdue and triggers
-    the notification task for each.
+    Finds users whose next_check_in_target + 6 hours is in the past.
+    Creates an overdue MonitoringLog (if not exists) and triggers notification.
     """
+    from django.contrib.auth import get_user_model
     from .models import MonitoringLog
+    from datetime import timedelta
 
+    User = get_user_model()
     now = timezone.now()
-    overdue_logs = MonitoringLog.objects.filter(
-        status=MonitoringLog.STATUS_PENDING,
-        deadline__lte=now,
-        notified=False,
-        sleep_mode=False,
-    )
+
+    users = User.objects.filter(
+        is_active=True,
+        safety_info__next_check_in_target__isnull=False,
+    ).select_related('safety_info')
 
     count = 0
-    for log in overdue_logs:
-        log.status = MonitoringLog.STATUS_OVERDUE
-        log.save(update_fields=['status', 'updated_at'])
-        notify_trusted_contacts.delay(str(log.id))
-        count += 1
+    for user in users:
+        target_time = user.safety_info.next_check_in_target
+        deadline = target_time + timedelta(hours=6)
 
-    logger.info(f'detect_overdue_checkins: found {count} overdue logs')
+        if now >= deadline:
+            log, created = MonitoringLog.objects.get_or_create(
+                user=user,
+                target_time=target_time,
+                defaults={
+                    'deadline': deadline,
+                    'status': MonitoringLog.STATUS_OVERDUE,
+                }
+            )
+
+            if log.status != MonitoringLog.STATUS_OVERDUE:
+                log.status = MonitoringLog.STATUS_OVERDUE
+                log.save(update_fields=['status', 'updated_at'])
+
+            if not log.notified and not log.sleep_mode:
+                notify_trusted_contacts.delay(str(log.id))
+                count += 1
+
+    logger.info(f'detect_overdue_checkins: triggered {count} new notifications')
     return count
 
 
@@ -115,17 +91,16 @@ def notify_trusted_contacts(monitoring_log_id: str):
         return
 
     # Consecutive miss check
-    # Count how many days in a row (before today) the user was overdue/notified
-    # without any check_in in between.
     consecutive_misses = 0
-    check_date = log.date
+    check_target = log.target_time
+    frequency = user.safety_info.check_in_frequency if user.safety_info else 24
 
     while True:
         from datetime import timedelta
-        check_date = check_date - timedelta(days=1)
+        check_target = check_target - timedelta(hours=frequency)
         previous_log = MonitoringLog.objects.filter(
             user=user,
-            date=check_date,
+            target_time=check_target,
         ).first()
 
         if not previous_log:

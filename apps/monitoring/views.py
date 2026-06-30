@@ -5,14 +5,15 @@ from rest_framework.permissions import IsAuthenticated
 from utils.response import CustomResponse
 from .models import CheckIn, MonitoringLog
 from .serializers import CheckInSerializer, CheckInResponseSerializer, MonitoringStatusSerializer
-from .services import get_or_create_today_log
+from .services import get_or_create_current_cycle_log
+from .utils import calculate_next_check_in_target
 
 
 class CheckInView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        log, _ = get_or_create_today_log(request.user)
+        log, _ = get_or_create_current_cycle_log(request.user)
 
         if log is None:
             return CustomResponse.error(
@@ -25,12 +26,7 @@ class CheckInView(APIView):
                 message='Sleep mode is active. Disable sleep mode before checking in.',
                 status_code=400,
             )
-
-        if log.status == MonitoringLog.STATUS_CHECKED_IN:
-            return CustomResponse.error(
-                message='Already checked in today.',
-                status_code=400,
-            )
+        # Removed the Already Checked in Today logic, as users can check in multiple times
 
         serializer = CheckInSerializer(data=request.data)
         if not serializer.is_valid():
@@ -48,20 +44,28 @@ class CheckInView(APIView):
 
         check_in = CheckIn.objects.create(
             user=request.user,
-            date=timezone.localdate(),
             note=note,
         )
 
         log.status = MonitoringLog.STATUS_CHECKED_IN
         log.save(update_fields=['status', 'updated_at'])
+        
+        safety_info = request.user.safety_info
+        new_target = calculate_next_check_in_target(
+            safety_info.anchor_time, 
+            safety_info.check_in_frequency, 
+            from_time=timezone.now()
+        )
+        safety_info.next_check_in_target = new_target
+        safety_info.save(update_fields=['next_check_in_target'])
 
         return CustomResponse.success(
             message='Checked in successfully.',
             data={
                 'checked_in_at': check_in.checked_in_at,
-                'date': check_in.date,
                 'status': log.status,
                 'note': check_in.note,
+                'next_check_in_target': new_target,
             },
         )
 
@@ -70,7 +74,7 @@ class MonitoringStatusView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        log, _ = get_or_create_today_log(request.user)
+        log, _ = get_or_create_current_cycle_log(request.user)
 
         if log is None:
             return CustomResponse.error(
@@ -89,18 +93,17 @@ class SleepModeView(APIView):
     permission_classes = [IsAuthenticated]
 
     def patch(self, request):
-        """Toggle sleep mode for today — on if off, off if on."""
-        log, _ = get_or_create_today_log(request.user)
+        """Toggle sleep mode for the current cycle."""
+        log, _ = get_or_create_current_cycle_log(request.user)
 
         if log is None:
             return CustomResponse.error(
                 message='No check-in time configured. Please set up your safety info first.',
                 status_code=400,
             )
-
         if log.status == MonitoringLog.STATUS_CHECKED_IN:
             return CustomResponse.error(
-                message='Already checked in today. Sleep mode not needed.',
+                message='Already checked in for this cycle. Sleep mode not needed.',
                 status_code=400,
             )
 
@@ -115,7 +118,7 @@ class SleepModeView(APIView):
         return CustomResponse.success(
             message=message,
             data={
-                'date': log.date,
+                'target_time': log.target_time,
                 'sleep_mode': log.sleep_mode,
             },
         )

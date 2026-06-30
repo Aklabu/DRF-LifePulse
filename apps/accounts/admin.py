@@ -29,8 +29,8 @@ class UserAdmin(BaseUserAdmin):
 
 @admin.register(SafetyInfo)
 class SafetyInfoAdmin(admin.ModelAdmin):
-    list_display = ['user', 'living_status', 'check_in_time', 'created_at']
-    list_filter = ['living_status']
+    list_display = ['user', 'living_status', 'check_in_frequency', 'created_at']
+    list_filter = ['living_status', 'check_in_frequency']
     search_fields = ['user__email', 'home_address']
 
 

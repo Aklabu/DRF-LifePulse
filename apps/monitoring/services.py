@@ -4,39 +4,47 @@ from django.conf import settings
 from django.utils import timezone
 
 
-def get_or_create_today_log(user):
+def get_or_create_current_cycle_log(user):
     """
-    Returns (MonitoringLog, created) for today.
+    Returns (MonitoringLog, created) for the current cycle.
 
-    If no log exists yet, creates one on the fly using the user's
-    SafetyInfo.check_in_time. Returns (None, False) if the user has
-    no SafetyInfo or no check_in_time configured.
+    If no log exists yet for the current next_check_in_target, creates one.
+    Returns (None, False) if the user has no SafetyInfo.
     """
     from .models import MonitoringLog
 
-    today = timezone.localdate()
+    # Check the user has a valid SafetyInfo
+    safety_info = getattr(user, 'safety_info', None)
+    if not safety_info or not safety_info.next_check_in_target:
+        return None, False
 
-    # Fast path — log already exists
+    # If the user's monitoring is paused, opening the app / checking in reactivates it immediately.
+    if not safety_info.is_monitoring_active:
+        from .utils import calculate_next_check_in_target
+        safety_info.is_monitoring_active = True
+        safety_info.next_check_in_target = calculate_next_check_in_target(
+            safety_info.anchor_time,
+            safety_info.check_in_frequency,
+            from_time=timezone.now(),
+            user_timezone=safety_info.timezone
+        )
+        safety_info.save(update_fields=['is_monitoring_active', 'next_check_in_target'])
+
+    target_time = safety_info.next_check_in_target
+
+    # Fast path
     try:
-        log = MonitoringLog.objects.get(user=user, date=today)
+        log = MonitoringLog.objects.get(user=user, target_time=target_time)
         return log, False
     except MonitoringLog.DoesNotExist:
         pass
 
-    # Check the user has a valid SafetyInfo with a check_in_time
-    safety_info = getattr(user, 'safety_info', None)
-    if not safety_info or not safety_info.check_in_time:
-        return None, False
-
-    check_in_time = safety_info.check_in_time
-    scheduled_dt = timezone.make_aware(datetime.combine(today, check_in_time))
-    deadline = scheduled_dt + timedelta(hours=8)
+    deadline = target_time + timedelta(hours=6)
 
     log, created = MonitoringLog.objects.get_or_create(
         user=user,
-        date=today,
+        target_time=target_time,
         defaults={
-            'scheduled_check_in_time': check_in_time,
             'deadline': deadline,
             'status': MonitoringLog.STATUS_PENDING,
         },
@@ -79,7 +87,7 @@ def compose_alert_message(user, safety_info, log) -> str:
 
     return (
         f'[SAFETY ALERT] — {user.name} has missed their check-in.\n'
-        f'Scheduled check-in time: {log.scheduled_check_in_time.strftime("%H:%M")}\n'
+        f'Target check-in time: {log.target_time.strftime("%Y-%m-%d %H:%M UTC")}\n'
         f'Missed deadline: {log.deadline.strftime("%Y-%m-%d %H:%M UTC")}\n'
         f'Home address: {safety_info.home_address}\n'
         f'Access notes: {safety_info.access_notes or "None provided"}\n'

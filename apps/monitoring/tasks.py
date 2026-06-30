@@ -6,76 +6,53 @@ from django.conf import settings
 logger = logging.getLogger(__name__)
 
 
-@shared_task(name='monitoring.create_daily_monitoring_logs')
-def create_daily_monitoring_logs():
-    """
-    Runs daily at midnight.
-    Creates a MonitoringLog for every active user who has a SafetyInfo
-    with a check_in_time set. Idempotent — skips users who already have
-    a log for today.
-    """
-    from django.contrib.auth import get_user_model
-    from datetime import datetime, timedelta
-    from .models import MonitoringLog
-
-    User = get_user_model()
-    today = timezone.localdate()
-    created_count = 0
-
-    users = User.objects.filter(
-        is_active=True,
-        safety_info__check_in_time__isnull=False,
-    ).select_related('safety_info')
-
-    for user in users:
-        if MonitoringLog.objects.filter(user=user, date=today).exists():
-            continue
-
-        check_in_time = user.safety_info.check_in_time
-        # Build deadline as today's date + check_in_time + 8 hours
-        scheduled_dt = timezone.make_aware(
-            datetime.combine(today, check_in_time)
-        )
-        deadline = scheduled_dt + timedelta(hours=8)
-
-        MonitoringLog.objects.create(
-            user=user,
-            date=today,
-            scheduled_check_in_time=check_in_time,
-            deadline=deadline,
-            status=MonitoringLog.STATUS_PENDING,
-        )
-        created_count += 1
-
-    logger.info(f'create_daily_monitoring_logs: created {created_count} logs for {today}')
-    return created_count
+# create_daily_monitoring_logs has been removed as it is no longer needed in the frequency-based system.
 
 
 @shared_task(name='monitoring.detect_overdue_checkins')
 def detect_overdue_checkins():
     """
     Runs every 15 minutes.
-    Marks pending logs past their deadline as overdue and triggers
-    the notification task for each.
+    Finds users whose next_check_in_target + 6 hours is in the past.
+    Creates an overdue MonitoringLog (if not exists) and triggers notification.
     """
+    from django.contrib.auth import get_user_model
     from .models import MonitoringLog
+    from datetime import timedelta
 
+    User = get_user_model()
     now = timezone.now()
-    overdue_logs = MonitoringLog.objects.filter(
-        status=MonitoringLog.STATUS_PENDING,
-        deadline__lte=now,
-        notified=False,
-        sleep_mode=False,
-    )
+
+    users = User.objects.filter(
+        is_active=True,
+        safety_info__next_check_in_target__isnull=False,
+        safety_info__is_monitoring_active=True,
+    ).select_related('safety_info')
 
     count = 0
-    for log in overdue_logs:
-        log.status = MonitoringLog.STATUS_OVERDUE
-        log.save(update_fields=['status', 'updated_at'])
-        notify_trusted_contacts.delay(str(log.id))
-        count += 1
+    for user in users:
+        target_time = user.safety_info.next_check_in_target
+        deadline = target_time + timedelta(hours=6)
 
-    logger.info(f'detect_overdue_checkins: found {count} overdue logs')
+        if now >= deadline:
+            log, created = MonitoringLog.objects.get_or_create(
+                user=user,
+                target_time=target_time,
+                defaults={
+                    'deadline': deadline,
+                    'status': MonitoringLog.STATUS_OVERDUE,
+                }
+            )
+
+            if log.status != MonitoringLog.STATUS_OVERDUE:
+                log.status = MonitoringLog.STATUS_OVERDUE
+                log.save(update_fields=['status', 'updated_at'])
+
+            if not log.notified and not log.sleep_mode:
+                notify_trusted_contacts.delay(str(log.id))
+                count += 1
+
+    logger.info(f'detect_overdue_checkins: triggered {count} new notifications')
     return count
 
 
@@ -83,12 +60,8 @@ def detect_overdue_checkins():
 def notify_trusted_contacts(monitoring_log_id: str):
     """
     Triggered by detect_overdue_checkins.
-    Sends SMS to all trusted contacts, creates NotificationLog entries,
-    and marks the MonitoringLog as notified.
-
-    SMS alerts are limited to 2 consecutive missed days. If the user has
-    already missed 2 or more days in a row before today, no SMS is sent.
-    The counter resets when the user checks in.
+    Sends SMS to all trusted contacts immediately on the first missed interval.
+    After sending the SMS, the user's monitoring is paused (is_monitoring_active = False).
     """
     from .models import MonitoringLog, NotificationLog
     from .services import send_sms, compose_alert_message
@@ -113,43 +86,6 @@ def notify_trusted_contacts(monitoring_log_id: str):
         log.notified_at = timezone.now()
         log.save(update_fields=['notified', 'notified_at', 'updated_at'])
         return
-
-    # Consecutive miss check
-    # Count how many days in a row (before today) the user was overdue/notified
-    # without any check_in in between.
-    consecutive_misses = 0
-    check_date = log.date
-
-    while True:
-        from datetime import timedelta
-        check_date = check_date - timedelta(days=1)
-        previous_log = MonitoringLog.objects.filter(
-            user=user,
-            date=check_date,
-        ).first()
-
-        if not previous_log:
-            break
-        if previous_log.status == MonitoringLog.STATUS_CHECKED_IN:
-            break  # Chain broken by a successful check-in
-        if previous_log.status == MonitoringLog.STATUS_OVERDUE and previous_log.notified:
-            consecutive_misses += 1
-        else:
-            break
-
-    # Current day counts as miss #1. If we already have 1+ previous consecutive
-    # misses, this would be miss #2 or beyond — skip the SMS.
-    if consecutive_misses >= 1:
-        logger.info(
-            f'notify_trusted_contacts: skipping SMS for {user.email} — '
-            f'{consecutive_misses + 1} consecutive misses (limit is 1)'
-        )
-        # Still mark notified so the task doesn't keep retrying
-        log.notified = True
-        log.notified_at = timezone.now()
-        log.save(update_fields=['notified', 'notified_at', 'updated_at'])
-        return
-
 
     safety_info = getattr(user, 'safety_info', None)
 
@@ -179,7 +115,10 @@ def notify_trusted_contacts(monitoring_log_id: str):
     log.notified_at = timezone.now()
     log.save(update_fields=['notified', 'notified_at', 'updated_at'])
 
+    # Pause monitoring so no more SMS are sent until the user reactivates by opening the app
+    safety_info.is_monitoring_active = False
+    safety_info.save(update_fields=['is_monitoring_active'])
+
     logger.info(
-        f'notify_trusted_contacts: notified {contacts.count()} contacts for {user.email} '
-        f'(consecutive miss #{consecutive_misses + 1})'
+        f'notify_trusted_contacts: notified {contacts.count()} contacts for {user.email} and paused monitoring.'
     )

@@ -44,8 +44,14 @@ class SafetyInfo(models.Model):
     living_status = models.CharField(max_length=20, choices=LIVING_STATUS_CHOICES)
     home_address = models.TextField()
     access_notes = models.TextField(blank=True, default='')
-    # Used to trigger alerts if the user misses a daily check-in
-    check_in_time = models.TimeField()
+    
+    # Check-in frequency configuration
+    anchor_time = models.TimeField()
+    check_in_frequency = models.IntegerField(choices=[(12, '12 Hours'), (24, '24 Hours')], default=24)
+    next_check_in_target = models.DateTimeField(null=True, blank=True)
+    is_monitoring_active = models.BooleanField(default=True)
+    timezone = models.CharField(max_length=100, default='UTC')
+    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

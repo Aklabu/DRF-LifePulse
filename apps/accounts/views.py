@@ -352,7 +352,11 @@ class ProfileView(APIView):
             if 'anchor_time' in safety_data or 'check_in_frequency' in safety_data:
                 new_anchor = safety_data.get('anchor_time', safety_info.anchor_time)
                 new_freq = safety_data.get('check_in_frequency', safety_info.check_in_frequency)
-                safety_data['next_check_in_target'] = calculate_next_check_in_target(new_anchor, new_freq)
+                safety_data['next_check_in_target'] = calculate_next_check_in_target(
+                    new_anchor, 
+                    new_freq,
+                    user_timezone=safety_info.timezone
+                )
             
             SafetyInfo.objects.filter(user=user).update(**safety_data)
 

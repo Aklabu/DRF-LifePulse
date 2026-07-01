@@ -61,7 +61,8 @@ class SignupView(APIView):
             safety_info_data = data['safety_info']
             next_target = calculate_next_check_in_target(
                 safety_info_data['anchor_time'], 
-                safety_info_data.get('check_in_frequency', 24)
+                safety_info_data.get('check_in_frequency', 24),
+                user_timezone=safety_info_data.get('timezone', 'UTC')
             )
             
             SafetyInfo.objects.create(

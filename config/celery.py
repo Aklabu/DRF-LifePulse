@@ -10,11 +10,6 @@ app.autodiscover_tasks()
 
 
 app.conf.beat_schedule = {
-    # Create daily monitoring logs at midnight
-    'create-daily-monitoring-logs': {
-        'task': 'monitoring.create_daily_monitoring_logs',
-        'schedule': crontab(hour=0, minute=0),
-    },
     # Detect overdue check-ins every 15 minutes
     'detect-overdue-checkins': {
         'task': 'monitoring.detect_overdue_checkins',

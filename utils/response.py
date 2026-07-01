@@ -18,6 +18,16 @@ class CustomResponse:
 
     @staticmethod
     def error(message, status_code=400, data=None, errors=None):
+        # If we have detailed errors, bubble up the first specific error into the main message for convenience
+        if errors and isinstance(errors, dict) and message in ["Validation failed.", "Invalid data"]:
+            first_key = next(iter(errors), None)
+            if first_key:
+                first_val = errors[first_key]
+                if isinstance(first_val, list) and len(first_val) > 0:
+                    message = str(first_val[0])
+                elif isinstance(first_val, str):
+                    message = first_val
+
         response_data = {
             "success": False,
             "statusCode": status_code,

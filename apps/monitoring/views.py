@@ -47,6 +47,21 @@ class CheckInView(APIView):
             note=note,
         )
 
+        now = timezone.now()
+        early_window_start = log.target_time - timezone.timedelta(hours=2)
+        is_ad_hoc = now < early_window_start
+
+        if is_ad_hoc:
+            return CustomResponse.success(
+                message='Check-in recorded. Your scheduled alarm is still active.',
+                data={
+                    'checked_in_at': check_in.checked_in_at,
+                    'status': log.status,
+                    'note': check_in.note,
+                    'next_check_in_target': request.user.safety_info.next_check_in_target,
+                },
+            )
+
         log.status = MonitoringLog.STATUS_CHECKED_IN
         log.save(update_fields=['status', 'updated_at'])
         
@@ -54,7 +69,7 @@ class CheckInView(APIView):
         new_target = calculate_next_check_in_target(
             safety_info.anchor_time, 
             safety_info.check_in_frequency, 
-            from_time=max(timezone.now(), log.target_time),
+            from_time=max(now, log.target_time),
             user_timezone=safety_info.timezone
         )
         safety_info.next_check_in_target = new_target

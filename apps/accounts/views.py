@@ -102,6 +102,17 @@ class SigninView(APIView):
         user = serializer.validated_data['user']
         user.is_logged_in = True
         user.save(update_fields=['is_logged_in'])
+
+        safety_info = getattr(user, 'safety_info', None)
+        if safety_info and safety_info.next_check_in_target and safety_info.next_check_in_target < timezone.now():
+            from apps.monitoring.utils import calculate_next_check_in_target
+            safety_info.next_check_in_target = calculate_next_check_in_target(
+                safety_info.anchor_time,
+                safety_info.check_in_frequency,
+                user_timezone=safety_info.timezone
+            )
+            safety_info.is_monitoring_active = True
+            safety_info.save(update_fields=['next_check_in_target', 'is_monitoring_active'])
         tokens = get_tokens_for_user(user)
         profile = UserProfileSerializer(user, context={'request': request}).data
 
@@ -320,7 +331,19 @@ class ProfileView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        serializer = UserProfileSerializer(request.user, context={'request': request})
+        user = request.user
+        safety_info = getattr(user, 'safety_info', None)
+        if safety_info and safety_info.next_check_in_target and safety_info.next_check_in_target < timezone.now():
+            from apps.monitoring.utils import calculate_next_check_in_target
+            safety_info.next_check_in_target = calculate_next_check_in_target(
+                safety_info.anchor_time,
+                safety_info.check_in_frequency,
+                user_timezone=safety_info.timezone
+            )
+            safety_info.is_monitoring_active = True
+            safety_info.save(update_fields=['next_check_in_target', 'is_monitoring_active'])
+
+        serializer = UserProfileSerializer(user, context={'request': request})
         return CustomResponse.success(
             message='Profile retrieved successfully.',
             data=serializer.data,

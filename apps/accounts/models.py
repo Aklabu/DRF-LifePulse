@@ -17,6 +17,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_logged_in = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
+    sms_credits = models.IntegerField(default=20)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

@@ -100,7 +100,12 @@ def notify_trusted_contacts(monitoring_log_id: str):
 
     message = compose_alert_message(user, safety_info, log)
 
+    notified_count = 0
     for contact in contacts:
+        if user.sms_credits <= 0:
+            logger.warning(f'notify_trusted_contacts: user {user.email} ran out of SMS credits. Stopping notifications.')
+            break
+            
         success = send_sms(contact.phone_number, message)
         NotificationLog.objects.create(
             monitoring_log=log,
@@ -110,6 +115,11 @@ def notify_trusted_contacts(monitoring_log_id: str):
             message_sent=message,
             status=NotificationLog.STATUS_SENT if success else NotificationLog.STATUS_FAILED,
         )
+        
+        if success:
+            user.sms_credits -= 1
+            user.save(update_fields=['sms_credits', 'updated_at'])
+            notified_count += 1
 
     log.notified = True
     log.notified_at = timezone.now()
@@ -120,5 +130,5 @@ def notify_trusted_contacts(monitoring_log_id: str):
     safety_info.save(update_fields=['is_monitoring_active'])
 
     logger.info(
-        f'notify_trusted_contacts: notified {contacts.count()} contacts for {user.email} and paused monitoring.'
+        f'notify_trusted_contacts: notified {notified_count} contacts for {user.email} and paused monitoring.'
     )

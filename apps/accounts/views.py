@@ -127,7 +127,7 @@ class LogoutView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        serializer = LogoutSerializer(data=request.data)
+        serializer = LogoutSerializer(data=request.data, context={'request': request})
         if not serializer.is_valid():
             return CustomResponse.error(
                 message='Refresh token is required.',
@@ -396,7 +396,7 @@ class TrustedContactListCreateView(APIView):
 
     def get(self, request):
         contacts = TrustedContact.objects.filter(user=request.user)
-        serializer = TrustedContactSerializer(contacts, many=True)
+        serializer = TrustedContactSerializer(contacts, many=True, context={'request': request})
         return CustomResponse.success(
             message='Contacts retrieved successfully.',
             data=serializer.data,
@@ -409,7 +409,7 @@ class TrustedContactListCreateView(APIView):
                 status_code=400,
             )
 
-        serializer = TrustedContactSerializer(data=request.data)
+        serializer = TrustedContactSerializer(data=request.data, context={'request': request})
         if not serializer.is_valid():
             return CustomResponse.error(
                 message='Validation failed.',
@@ -440,7 +440,7 @@ class TrustedContactDetailView(APIView):
         if not contact:
             return CustomResponse.error(message='Contact not found.', status_code=404)
 
-        serializer = TrustedContactSerializer(contact, data=request.data, partial=True)
+        serializer = TrustedContactSerializer(contact, data=request.data, partial=True, context={'request': request})
         if not serializer.is_valid():
             return CustomResponse.error(
                 message='Validation failed.',

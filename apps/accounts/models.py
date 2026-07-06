@@ -70,6 +70,7 @@ class TrustedContact(models.Model):
     relationship = models.CharField(max_length=100)
     phone_number = models.CharField(max_length=20)
     email = models.EmailField(blank=True, default='')
+    photo = models.ImageField(upload_to='contacts/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

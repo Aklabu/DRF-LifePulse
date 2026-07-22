@@ -79,14 +79,37 @@ def notify_trusted_contacts(monitoring_log_id: str):
     user = log.user
     safety_info = getattr(user, 'safety_info', None)
 
-    # Skip SMS if the user is not currently logged in or monitoring is inactive
-    if not user.is_logged_in or not safety_info or not safety_info.is_monitoring_active:
-        logger.info(
-            f'notify_trusted_contacts: skipping SMS for {user.email} — user is logged out or monitoring inactive'
-        )
+    # --- FINAL SAFETY CHECKS BEFORE SENDING SMS ---
+    # 1. Is the user currently signed in?
+    if not user.is_active or not user.is_logged_in:
+        logger.info(f'notify_trusted_contacts: skipping SMS for {user.email} — user is not active or logged out')
         log.notified = True
-        log.notified_at = timezone.now()
-        log.save(update_fields=['notified', 'notified_at', 'updated_at'])
+        log.save(update_fields=['notified', 'updated_at'])
+        return
+
+    # 2. Is monitoring currently active?
+    if not safety_info or not safety_info.is_monitoring_active:
+        logger.info(f'notify_trusted_contacts: skipping SMS for {user.email} — monitoring is inactive')
+        log.notified = True
+        log.save(update_fields=['notified', 'updated_at'])
+        return
+
+    # 3. Is there an active check-in schedule?
+    if not safety_info.next_check_in_target:
+        logger.info(f'notify_trusted_contacts: skipping SMS for {user.email} — no active check-in schedule')
+        log.notified = True
+        log.save(update_fields=['notified', 'updated_at'])
+        return
+
+    # 4. Has the user genuinely missed the deadline and grace period?
+    # log.deadline includes the grace period (target + 6h or target + 5m depending on the logic)
+    if log.status != MonitoringLog.STATUS_OVERDUE or timezone.now() < log.deadline:
+        logger.info(f'notify_trusted_contacts: skipping SMS for {user.email} — deadline not genuinely missed')
+        return
+
+    # 5. Has the session not been cancelled or replaced?
+    if log.sleep_mode or log.notified:
+        logger.info(f'notify_trusted_contacts: skipping SMS for {user.email} — session is in sleep mode or already notified')
         return
 
     contacts = user.trusted_contacts.all()

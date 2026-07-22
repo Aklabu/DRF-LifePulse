@@ -25,6 +25,7 @@ def detect_overdue_checkins():
 
     users = User.objects.filter(
         is_active=True,
+        is_logged_in=True,
         safety_info__next_check_in_target__isnull=False,
         safety_info__is_monitoring_active=True,
     ).select_related('safety_info')
@@ -76,21 +77,16 @@ def notify_trusted_contacts(monitoring_log_id: str):
         return
 
     user = log.user
+    safety_info = getattr(user, 'safety_info', None)
 
-    # Skip SMS if the user is not currently logged in
-    if not user.is_logged_in:
+    # Skip SMS if the user is not currently logged in or monitoring is inactive
+    if not user.is_logged_in or not safety_info or not safety_info.is_monitoring_active:
         logger.info(
-            f'notify_trusted_contacts: skipping SMS for {user.email} — user is logged out'
+            f'notify_trusted_contacts: skipping SMS for {user.email} — user is logged out or monitoring inactive'
         )
         log.notified = True
         log.notified_at = timezone.now()
         log.save(update_fields=['notified', 'notified_at', 'updated_at'])
-        return
-
-    safety_info = getattr(user, 'safety_info', None)
-
-    if not safety_info:
-        logger.warning(f'notify_trusted_contacts: no SafetyInfo for user {user.email}')
         return
 
     contacts = user.trusted_contacts.all()

@@ -122,9 +122,9 @@ class SigninView(APIView):
         )
 
 
-# Blacklists the refresh token to invalidate the session
+# Blacklists the refresh token to invalidate the session and pauses monitoring
 class LogoutView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def post(self, request):
         serializer = LogoutSerializer(data=request.data, context={'request': request})
@@ -135,9 +135,29 @@ class LogoutView(APIView):
                 errors=serializer.errors,
             )
 
-        BlacklistedToken.objects.create(token=serializer.validated_data['refresh_token'])
-        request.user.is_logged_in = False
-        request.user.save(update_fields=['is_logged_in'])
+        token_str = serializer.validated_data['refresh_token']
+        BlacklistedToken.objects.get_or_create(token=token_str)
+
+        user = request.user if (request.user and request.user.is_authenticated) else None
+
+        if not user:
+            try:
+                refresh = RefreshToken(token_str)
+                user_id = refresh.payload.get('user_id')
+                if user_id:
+                    user = User.objects.filter(id=user_id).first()
+            except Exception:
+                pass
+
+        if user:
+            user.is_logged_in = False
+            user.save(update_fields=['is_logged_in'])
+
+            safety_info = getattr(user, 'safety_info', None)
+            if safety_info:
+                safety_info.is_monitoring_active = False
+                safety_info.save(update_fields=['is_monitoring_active'])
+
         return CustomResponse.success(message='Logged out successfully.')
 
 

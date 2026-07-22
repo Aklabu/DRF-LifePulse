@@ -25,11 +25,13 @@ class MonitoringLog(models.Model):
     STATUS_PENDING = 'pending'
     STATUS_CHECKED_IN = 'checked_in'
     STATUS_OVERDUE = 'overdue'
+    STATUS_CANCELLED = 'cancelled'
 
     STATUS_CHOICES = [
         (STATUS_PENDING, 'Pending'),
         (STATUS_CHECKED_IN, 'Checked In'),
         (STATUS_OVERDUE, 'Overdue'),
+        (STATUS_CANCELLED, 'Cancelled'),
     ]
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

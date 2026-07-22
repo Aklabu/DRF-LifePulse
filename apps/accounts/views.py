@@ -156,7 +156,15 @@ class LogoutView(APIView):
             safety_info = getattr(user, 'safety_info', None)
             if safety_info:
                 safety_info.is_monitoring_active = False
-                safety_info.save(update_fields=['is_monitoring_active'])
+                safety_info.next_check_in_target = None
+                safety_info.save(update_fields=['is_monitoring_active', 'next_check_in_target'])
+
+            # Cancel all queued/pending SMS escalation jobs for this user
+            from apps.monitoring.models import MonitoringLog
+            MonitoringLog.objects.filter(
+                user=user,
+                status__in=[MonitoringLog.STATUS_PENDING, MonitoringLog.STATUS_OVERDUE]
+            ).update(status=MonitoringLog.STATUS_CANCELLED)
 
         return CustomResponse.success(message='Logged out successfully.')
 

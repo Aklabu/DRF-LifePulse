@@ -89,8 +89,6 @@ class Pet(models.Model):
     age = models.PositiveIntegerField()
     breed = models.CharField(max_length=255)
     photo = models.ImageField(upload_to='pets/', blank=True, null=True)
-    caregiver_name = models.CharField(max_length=255, blank=True, default='')
-    caregiver_phone = models.CharField(max_length=20, blank=True, default='')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

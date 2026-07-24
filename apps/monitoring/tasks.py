@@ -163,3 +163,20 @@ def notify_trusted_contacts(monitoring_log_id: str):
     logger.info(
         f'notify_trusted_contacts: notified {notified_count} contacts for {user.email} and paused monitoring.'
     )
+
+
+@shared_task
+def reset_monthly_sms_credits():
+    from apps.accounts.models import User
+    
+    logger.info('Running monthly SMS credits reset task...')
+    
+    # Pro users get 50 SMS credits per month
+    pro_users = User.objects.filter(is_active=True, subscription_tier='pro')
+    pro_count = pro_users.update(sms_credits=50)
+    
+    # Free users get 0 SMS credits (No free trial allowed)
+    free_users = User.objects.filter(is_active=True, subscription_tier='free')
+    free_count = free_users.update(sms_credits=0)
+
+    logger.info(f'Monthly SMS reset complete. Updated {pro_count} Pro users and {free_count} Free users.')

@@ -54,6 +54,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         model = User
         fields = [
             'id', 'name', 'email', 'phone_number', 'sms_credits',
+            'subscription_tier', 'subscription_expires_at',
             'created_at', 'updated_at',
             'safety_info', 'trusted_contacts', 'pets'
         ]

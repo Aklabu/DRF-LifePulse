@@ -9,6 +9,11 @@ from .managers import UserManager
 
 # Custom user model using email as the unique identifier
 class User(AbstractBaseUser, PermissionsMixin):
+    SUBSCRIPTION_TIERS = [
+        ('free', 'Free'),
+        ('pro', 'Pro'),
+    ]
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=255)
     email = models.EmailField(unique=True)
@@ -17,7 +22,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_logged_in = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
-    sms_credits = models.IntegerField(default=20)
+    
+    # Quota and Subscription
+    sms_credits = models.IntegerField(default=0)
+    subscription_tier = models.CharField(max_length=20, choices=SUBSCRIPTION_TIERS, default='free')
+    subscription_expires_at = models.DateTimeField(null=True, blank=True)
+    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

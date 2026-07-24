@@ -6,14 +6,15 @@ from .models import User, SafetyInfo, TrustedContact, Pet, OTPVerification, Blac
 
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
-    list_display = ['email', 'name', 'phone_number', 'is_active', 'is_staff', 'created_at']
-    list_filter = ['is_active', 'is_staff', 'is_superuser']
+    list_display = ['email', 'name', 'phone_number', 'subscription_tier', 'sms_credits', 'is_active', 'is_staff']
+    list_filter = ['subscription_tier', 'is_active', 'is_staff', 'is_superuser']
     search_fields = ['email', 'name', 'phone_number']
     ordering = ['-created_at']
 
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
         ('Personal Info', {'fields': ('name', 'phone_number')}),
+        ('Subscription & Quota', {'fields': ('subscription_tier', 'subscription_expires_at', 'sms_credits')}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
         ('Timestamps', {'fields': ('created_at', 'updated_at')}),
     )

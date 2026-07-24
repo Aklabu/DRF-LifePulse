@@ -15,4 +15,9 @@ app.conf.beat_schedule = {
         'task': 'monitoring.detect_overdue_checkins',
         'schedule': crontab(minute='*/15'),
     },
+    # Reset SMS credits on the 1st of every month at midnight
+    'reset-monthly-sms-credits': {
+        'task': 'monitoring.reset_monthly_sms_credits',
+        'schedule': crontab(day_of_month='1', hour='0', minute='0'),
+    },
 }

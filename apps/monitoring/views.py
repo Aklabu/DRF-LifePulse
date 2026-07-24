@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 
 from utils.response import CustomResponse
-from .models import CheckIn, MonitoringLog
+from .models import CheckIn, MonitoringLog, log_activity, ActivityLog
 from .serializers import CheckInSerializer, CheckInResponseSerializer, MonitoringStatusSerializer
 from .services import get_or_create_current_cycle_log
 from .utils import calculate_next_check_in_target
@@ -52,6 +52,7 @@ class CheckInView(APIView):
         is_ad_hoc = now < early_window_start
 
         if is_ad_hoc:
+            log_activity(request.user, ActivityLog.CHECK_IN, f'Ad-hoc check-in recorded (outside scheduled window)', metadata={'note': check_in.note}, request=request)
             return CustomResponse.success(
                 message='Check-in recorded. Your scheduled alarm is still active.',
                 data={
@@ -74,6 +75,8 @@ class CheckInView(APIView):
         )
         safety_info.next_check_in_target = new_target
         safety_info.save(update_fields=['next_check_in_target'])
+
+        log_activity(request.user, ActivityLog.CHECK_IN, f'Checked in for target {log.target_time}. Next target: {new_target}', metadata={'status': log.status, 'note': check_in.note}, request=request)
 
         return CustomResponse.success(
             message='Checked in successfully.',
@@ -128,8 +131,10 @@ class SleepModeView(APIView):
 
         if log.sleep_mode:
             message = 'Sleep mode enabled. Monitoring is paused for today.'
+            log_activity(request.user, ActivityLog.SLEEP_MODE_ON, f'Sleep mode enabled for target {log.target_time}', request=request)
         else:
             message = 'Sleep mode disabled. Monitoring has resumed.'
+            log_activity(request.user, ActivityLog.SLEEP_MODE_OFF, f'Sleep mode disabled for target {log.target_time}', request=request)
 
         return CustomResponse.success(
             message=message,

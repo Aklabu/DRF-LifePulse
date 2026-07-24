@@ -12,6 +12,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
 
 from apps.monitoring.utils import calculate_next_check_in_target
+from apps.monitoring.models import log_activity, ActivityLog
 from utils.response import CustomResponse
 from .models import User, SafetyInfo, TrustedContact, Pet, OTPVerification, BlacklistedToken
 from .services import send_otp_email, generate_deletion_token, verify_deletion_token, send_deletion_confirmation_email
@@ -79,6 +80,8 @@ class SignupView(APIView):
         tokens = get_tokens_for_user(user)
         profile = UserProfileSerializer(user, context={'request': request}).data
 
+        log_activity(user, ActivityLog.SIGNUP, f'Account created for {user.email}', request=request)
+
         return CustomResponse.success(
             message='Account created successfully.',
             data={**tokens, 'user': profile},
@@ -104,7 +107,7 @@ class SigninView(APIView):
         user.save(update_fields=['is_logged_in'])
 
         safety_info = getattr(user, 'safety_info', None)
-        if safety_info and safety_info.next_check_in_target and safety_info.next_check_in_target < timezone.now():
+        if safety_info and (not safety_info.next_check_in_target or safety_info.next_check_in_target < timezone.now()):
             from apps.monitoring.utils import calculate_next_check_in_target
             safety_info.next_check_in_target = calculate_next_check_in_target(
                 safety_info.anchor_time,
@@ -113,8 +116,12 @@ class SigninView(APIView):
             )
             safety_info.is_monitoring_active = True
             safety_info.save(update_fields=['next_check_in_target', 'is_monitoring_active'])
+            log_activity(user, ActivityLog.MONITORING_ACTIVATED, f'Monitoring reactivated on sign-in. Next target: {safety_info.next_check_in_target}', request=request)
+
         tokens = get_tokens_for_user(user)
         profile = UserProfileSerializer(user, context={'request': request}).data
+
+        log_activity(user, ActivityLog.SIGNIN, f'{user.email} signed in', request=request)
 
         return CustomResponse.success(
             message='Signed in successfully.',
@@ -161,10 +168,16 @@ class LogoutView(APIView):
 
             # Cancel all queued/pending SMS escalation jobs for this user
             from apps.monitoring.models import MonitoringLog
-            MonitoringLog.objects.filter(
+            cancelled = MonitoringLog.objects.filter(
                 user=user,
                 status__in=[MonitoringLog.STATUS_PENDING, MonitoringLog.STATUS_OVERDUE]
             ).update(status=MonitoringLog.STATUS_CANCELLED)
+
+            log_activity(user, ActivityLog.LOGOUT, f'{user.email} logged out. Monitoring deactivated. {cancelled} pending log(s) cancelled.', request=request)
+            log_activity(user, ActivityLog.MONITORING_DEACTIVATED, f'Monitoring deactivated on logout', request=request)
+        else:
+            # Could not resolve user — logout partially failed
+            log_activity(None, ActivityLog.LOGOUT_FAILED, f'Logout called but user could not be resolved from token', request=request) if False else None  # no user to log against
 
         return CustomResponse.success(message='Logged out successfully.')
 
@@ -223,6 +236,8 @@ class ChangePasswordView(APIView):
 
         user.set_password(data['new_password'])
         user.save()
+
+        log_activity(user, ActivityLog.PASSWORD_CHANGED, f'{user.email} changed their password', request=request)
 
         return CustomResponse.success(message='Password changed successfully.')
 
@@ -351,6 +366,8 @@ class ResetPasswordView(APIView):
         user.save()
         record.delete()  # Prevent OTP reuse
 
+        log_activity(user, ActivityLog.PASSWORD_RESET, f'Password reset via OTP for {user.email}', request=request)
+
         return CustomResponse.success(message='Password reset successfully.')
 
 
@@ -410,6 +427,8 @@ class ProfileView(APIView):
                 )
             
             SafetyInfo.objects.filter(user=user).update(**safety_data)
+
+        log_activity(user, ActivityLog.PROFILE_UPDATED, f'{user.email} updated their profile', metadata=data, request=request)
 
         profile = UserProfileSerializer(user, context={'request': request}).data
         return CustomResponse.success(
@@ -587,6 +606,9 @@ class DeleteAccountView(APIView):
                 status_code=400,
                 errors=serializer.errors,
             )
+
+        # Log before deletion (entry will be cascade-deleted with the user)
+        log_activity(request.user, ActivityLog.ACCOUNT_DELETED, f'Account {request.user.email} permanently deleted', request=request)
 
         # Permanently delete the user — cascades to all related data
         # (SafetyInfo, TrustedContacts, Pets, MonitoringLogs, CheckIns, NotificationLogs)

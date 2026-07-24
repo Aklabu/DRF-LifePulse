@@ -53,6 +53,9 @@ def detect_overdue_checkins():
                 notify_trusted_contacts.delay(str(log.id))
                 count += 1
 
+                from .models import log_activity, ActivityLog
+                log_activity(user, ActivityLog.OVERDUE_DETECTED, f'Overdue detected. Target: {target_time}, Deadline: {deadline}', metadata={'target_time': str(target_time), 'deadline': str(deadline)})
+
     logger.info(f'detect_overdue_checkins: triggered {count} new notifications')
     return count
 
@@ -140,6 +143,12 @@ def notify_trusted_contacts(monitoring_log_id: str):
             user.save(update_fields=['sms_credits', 'updated_at'])
             notified_count += 1
 
+            from .models import log_activity as _log_activity, ActivityLog
+            _log_activity(user, ActivityLog.SMS_SENT, f'SMS sent to {contact.name} ({contact.phone_number})', metadata={'contact_name': contact.name, 'contact_phone': contact.phone_number})
+        else:
+            from .models import log_activity as _log_activity, ActivityLog
+            _log_activity(user, ActivityLog.SMS_FAILED, f'SMS failed to {contact.name} ({contact.phone_number})', metadata={'contact_name': contact.name, 'contact_phone': contact.phone_number})
+
     log.notified = True
     log.notified_at = timezone.now()
     log.save(update_fields=['notified', 'notified_at', 'updated_at'])
@@ -147,6 +156,9 @@ def notify_trusted_contacts(monitoring_log_id: str):
     # Pause monitoring so no more SMS are sent until the user reactivates by opening the app
     safety_info.is_monitoring_active = False
     safety_info.save(update_fields=['is_monitoring_active'])
+
+    from .models import log_activity as _log_activity, ActivityLog
+    _log_activity(user, ActivityLog.MONITORING_DEACTIVATED, f'Monitoring paused after SMS escalation. {notified_count} contact(s) notified.')
 
     logger.info(
         f'notify_trusted_contacts: notified {notified_count} contacts for {user.email} and paused monitoring.'

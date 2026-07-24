@@ -428,7 +428,7 @@ class ProfileView(APIView):
             
             SafetyInfo.objects.filter(user=user).update(**safety_data)
 
-        log_activity(user, ActivityLog.PROFILE_UPDATED, f'{user.email} updated their profile', metadata=data, request=request)
+        log_activity(user, ActivityLog.PROFILE_UPDATED, f'{user.email} updated their profile', metadata=request.data, request=request)
 
         profile = UserProfileSerializer(user, context={'request': request}).data
         return CustomResponse.success(

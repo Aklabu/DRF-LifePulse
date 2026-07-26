@@ -377,17 +377,6 @@ class ProfileView(APIView):
 
     def get(self, request):
         user = request.user
-        safety_info = getattr(user, 'safety_info', None)
-        if safety_info and safety_info.next_check_in_target and safety_info.next_check_in_target < timezone.now():
-            from apps.monitoring.utils import calculate_next_check_in_target
-            safety_info.next_check_in_target = calculate_next_check_in_target(
-                safety_info.anchor_time,
-                safety_info.check_in_frequency,
-                user_timezone=safety_info.timezone
-            )
-            safety_info.is_monitoring_active = True
-            safety_info.save(update_fields=['next_check_in_target', 'is_monitoring_active'])
-
         serializer = UserProfileSerializer(user, context={'request': request})
         return CustomResponse.success(
             message='Profile retrieved successfully.',

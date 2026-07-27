@@ -10,10 +10,10 @@ app.autodiscover_tasks()
 
 
 app.conf.beat_schedule = {
-    # Detect overdue check-ins every 2 minutes (testing mode)
+    # Detect overdue check-ins every 15 minutes
     'detect-overdue-checkins': {
         'task': 'monitoring.detect_overdue_checkins',
-        'schedule': crontab(minute='*/2'),
+        'schedule': crontab(minute='*/15'),
     },
     # Reset SMS credits on the 1st of every month at midnight
     'reset-monthly-sms-credits': {

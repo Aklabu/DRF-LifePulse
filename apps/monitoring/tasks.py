@@ -12,8 +12,8 @@ logger = logging.getLogger(__name__)
 @shared_task(name='monitoring.detect_overdue_checkins')
 def detect_overdue_checkins():
     """
-    Runs every 2 minutes (or 15 mins).
-    Finds users whose next_check_in_target + 2 minutes is in the past.
+    Runs every 15 minutes.
+    Finds users whose next_check_in_target + 1 hour is in the past.
     Creates an overdue MonitoringLog (if not exists) and triggers notification.
     """
     from django.contrib.auth import get_user_model
@@ -40,7 +40,7 @@ def detect_overdue_checkins():
                 continue
 
             target_time = safety_info.next_check_in_target
-            deadline = target_time + timedelta(minutes=2)
+            deadline = target_time + timedelta(hours=1)
 
             if now >= deadline:
                 log, created = MonitoringLog.objects.select_for_update(of=('self',)).get_or_create(

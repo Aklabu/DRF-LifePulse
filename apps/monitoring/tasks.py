@@ -13,11 +13,13 @@ logger = logging.getLogger(__name__)
 def detect_overdue_checkins():
     """
     Runs every 15 minutes.
-    Finds users whose next_check_in_target + 6 hours is in the past.
+    Finds users whose next_check_in_target + 1 hour is in the past.
     Creates an overdue MonitoringLog (if not exists) and triggers notification.
     """
     from django.contrib.auth import get_user_model
+    from django.db import transaction
     from .models import MonitoringLog
+    from apps.accounts.models import SafetyInfo
     from datetime import timedelta
 
     User = get_user_model()
@@ -32,29 +34,37 @@ def detect_overdue_checkins():
 
     count = 0
     for user in users:
-        target_time = user.safety_info.next_check_in_target
-        deadline = target_time + timedelta(hours=6)
+        with transaction.atomic():
+            safety_info = SafetyInfo.objects.select_for_update().filter(user=user).first()
+            if not safety_info or not safety_info.is_monitoring_active:
+                continue
 
-        if now >= deadline:
-            log, created = MonitoringLog.objects.get_or_create(
-                user=user,
-                target_time=target_time,
-                defaults={
-                    'deadline': deadline,
-                    'status': MonitoringLog.STATUS_OVERDUE,
-                }
-            )
+            target_time = safety_info.next_check_in_target
+            deadline = target_time + timedelta(hours=1)
 
-            if log.status != MonitoringLog.STATUS_OVERDUE:
-                log.status = MonitoringLog.STATUS_OVERDUE
-                log.save(update_fields=['status', 'updated_at'])
+            if now >= deadline:
+                log, created = MonitoringLog.objects.select_for_update().get_or_create(
+                    user=user,
+                    target_time=target_time,
+                    defaults={
+                        'deadline': deadline,
+                        'status': MonitoringLog.STATUS_OVERDUE,
+                    }
+                )
 
-            if not log.notified and not log.sleep_mode:
-                notify_trusted_contacts.delay(str(log.id))
-                count += 1
+                if log.status != MonitoringLog.STATUS_OVERDUE:
+                    log.status = MonitoringLog.STATUS_OVERDUE
+                    log.save(update_fields=['status', 'updated_at'])
 
-                from .models import log_activity, ActivityLog
-                log_activity(user, ActivityLog.OVERDUE_DETECTED, f'Overdue detected. Target: {target_time}, Deadline: {deadline}', metadata={'target_time': str(target_time), 'deadline': str(deadline)})
+                if not log.notified and not log.sleep_mode:
+                    safety_info.is_monitoring_active = False
+                    safety_info.save(update_fields=['is_monitoring_active'])
+
+                    notify_trusted_contacts.delay(str(log.id))
+                    count += 1
+
+                    from .models import log_activity, ActivityLog
+                    log_activity(user, ActivityLog.OVERDUE_DETECTED, f'Overdue detected. Target: {target_time}, Deadline: {deadline}', metadata={'target_time': str(target_time), 'deadline': str(deadline)})
 
     logger.info(f'detect_overdue_checkins: triggered {count} new notifications')
     return count
@@ -70,50 +80,61 @@ def notify_trusted_contacts(monitoring_log_id: str):
     from .models import MonitoringLog, NotificationLog
     from .services import send_sms, compose_alert_message
     from django.utils import timezone
+    from django.db import transaction
 
-    try:
-        log = MonitoringLog.objects.select_related(
-            'user', 'user__safety_info'
-        ).get(id=monitoring_log_id)
-    except MonitoringLog.DoesNotExist:
-        logger.error(f'notify_trusted_contacts: MonitoringLog {monitoring_log_id} not found')
-        return
+    with transaction.atomic():
+        try:
+            log = MonitoringLog.objects.select_for_update().select_related(
+                'user', 'user__safety_info'
+            ).get(id=monitoring_log_id)
+        except MonitoringLog.DoesNotExist:
+            logger.error(f'notify_trusted_contacts: MonitoringLog {monitoring_log_id} not found')
+            return
 
-    user = log.user
-    safety_info = getattr(user, 'safety_info', None)
+        user = log.user
+        safety_info = getattr(user, 'safety_info', None)
 
-    # --- FINAL SAFETY CHECKS BEFORE SENDING SMS ---
-    # 1. Is the user currently signed in?
-    if not user.is_active or not user.is_logged_in:
-        logger.info(f'notify_trusted_contacts: skipping SMS for {user.email} — user is not active or logged out')
+        # --- FINAL SAFETY CHECKS BEFORE SENDING SMS ---
+        # 1. Is the user currently signed in?
+        if not user.is_active or not user.is_logged_in:
+            logger.info(f'notify_trusted_contacts: skipping SMS for {user.email} — user is not active or logged out')
+            if not log.notified:
+                log.notified = True
+                log.save(update_fields=['notified', 'updated_at'])
+            return
+
+        # 2. Is monitoring currently active?
+        if not safety_info:
+            logger.info(f'notify_trusted_contacts: skipping SMS for {user.email} — no safety info')
+            if not log.notified:
+                log.notified = True
+                log.save(update_fields=['notified', 'updated_at'])
+            return
+
+        # 3. Is there an active check-in schedule?
+        if not safety_info.next_check_in_target:
+            logger.info(f'notify_trusted_contacts: skipping SMS for {user.email} — no active check-in schedule')
+            if not log.notified:
+                log.notified = True
+                log.save(update_fields=['notified', 'updated_at'])
+            return
+
+        # 4. Has the user genuinely missed the deadline and grace period?
+        if log.status != MonitoringLog.STATUS_OVERDUE or timezone.now() < log.deadline:
+            logger.info(f'notify_trusted_contacts: skipping SMS for {user.email} — deadline not genuinely missed')
+            return
+
+        # 5. Has the session not been cancelled or replaced?
+        if log.sleep_mode or log.notified:
+            logger.info(f'notify_trusted_contacts: skipping SMS for {user.email} — session is in sleep mode or already notified')
+            return
+
         log.notified = True
-        log.save(update_fields=['notified', 'updated_at'])
-        return
+        log.notified_at = timezone.now()
+        log.save(update_fields=['notified', 'notified_at', 'updated_at'])
 
-    # 2. Is monitoring currently active?
-    if not safety_info or not safety_info.is_monitoring_active:
-        logger.info(f'notify_trusted_contacts: skipping SMS for {user.email} — monitoring is inactive')
-        log.notified = True
-        log.save(update_fields=['notified', 'updated_at'])
-        return
-
-    # 3. Is there an active check-in schedule?
-    if not safety_info.next_check_in_target:
-        logger.info(f'notify_trusted_contacts: skipping SMS for {user.email} — no active check-in schedule')
-        log.notified = True
-        log.save(update_fields=['notified', 'updated_at'])
-        return
-
-    # 4. Has the user genuinely missed the deadline and grace period?
-    # log.deadline includes the grace period (target + 6h or target + 5m depending on the logic)
-    if log.status != MonitoringLog.STATUS_OVERDUE or timezone.now() < log.deadline:
-        logger.info(f'notify_trusted_contacts: skipping SMS for {user.email} — deadline not genuinely missed')
-        return
-
-    # 5. Has the session not been cancelled or replaced?
-    if log.sleep_mode or log.notified:
-        logger.info(f'notify_trusted_contacts: skipping SMS for {user.email} — session is in sleep mode or already notified')
-        return
+        safety_info.is_monitoring_active = False
+        safety_info.save(update_fields=['is_monitoring_active'])
 
     contacts = user.trusted_contacts.all()
     if not contacts.exists():
@@ -148,14 +169,6 @@ def notify_trusted_contacts(monitoring_log_id: str):
         else:
             from .models import log_activity as _log_activity, ActivityLog
             _log_activity(user, ActivityLog.SMS_FAILED, f'SMS failed to {contact.name} ({contact.phone_number})', metadata={'contact_name': contact.name, 'contact_phone': contact.phone_number})
-
-    log.notified = True
-    log.notified_at = timezone.now()
-    log.save(update_fields=['notified', 'notified_at', 'updated_at'])
-
-    # Pause monitoring so no more SMS are sent until the user reactivates by opening the app
-    safety_info.is_monitoring_active = False
-    safety_info.save(update_fields=['is_monitoring_active'])
 
     from .models import log_activity as _log_activity, ActivityLog
     _log_activity(user, ActivityLog.MONITORING_DEACTIVATED, f'Monitoring paused after SMS escalation. {notified_count} contact(s) notified.')

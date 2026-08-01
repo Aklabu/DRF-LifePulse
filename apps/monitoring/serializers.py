@@ -16,10 +16,11 @@ class CheckInResponseSerializer(serializers.ModelSerializer):
 
 class MonitoringStatusSerializer(serializers.ModelSerializer):
     checked_in_at = serializers.SerializerMethodField()
+    is_monitoring_active = serializers.SerializerMethodField()
 
     class Meta:
         model = MonitoringLog
-        fields = ['target_time', 'deadline', 'status', 'sleep_mode', 'checked_in_at']
+        fields = ['target_time', 'deadline', 'status', 'sleep_mode', 'checked_in_at', 'is_monitoring_active']
 
     def get_checked_in_at(self, obj):
         if obj.status == MonitoringLog.STATUS_CHECKED_IN:
@@ -27,3 +28,9 @@ class MonitoringStatusSerializer(serializers.ModelSerializer):
             if check_in:
                 return check_in.checked_in_at
         return None
+
+    def get_is_monitoring_active(self, obj):
+        safety_info = getattr(obj.user, 'safety_info', None)
+        if safety_info:
+            return safety_info.is_monitoring_active
+        return True

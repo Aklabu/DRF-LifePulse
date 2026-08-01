@@ -4,12 +4,15 @@ from django.conf import settings
 from django.utils import timezone
 
 
-def get_or_create_current_cycle_log(user):
+def get_or_create_current_cycle_log(user, auto_reactivate=True):
     """
     Returns (MonitoringLog, created) for the current cycle.
 
     If no log exists yet for the current next_check_in_target, creates one.
     Returns (None, False) if the user has no SafetyInfo.
+
+    When auto_reactivate=False and monitoring is paused, returns (None, False)
+    so the caller can detect the deactivated state without side effects.
     """
     from .models import MonitoringLog
 
@@ -18,9 +21,13 @@ def get_or_create_current_cycle_log(user):
     if not safety_info or not safety_info.next_check_in_target:
         return None, False
 
-    # If the user's monitoring is paused, opening the app / checking in reactivates it immediately.
+    # If the user's monitoring is paused, reactivate only when explicitly requested.
     if not safety_info.is_monitoring_active:
+        if not auto_reactivate:
+            return None, False
+
         from .utils import calculate_next_check_in_target
+        from .models import log_activity, ActivityLog
         safety_info.is_monitoring_active = True
         safety_info.next_check_in_target = calculate_next_check_in_target(
             safety_info.anchor_time,
@@ -29,6 +36,7 @@ def get_or_create_current_cycle_log(user):
             user_timezone=safety_info.timezone
         )
         safety_info.save(update_fields=['is_monitoring_active', 'next_check_in_target'])
+        log_activity(user, ActivityLog.MONITORING_ACTIVATED, f'Monitoring reactivated via check-in. Next target: {safety_info.next_check_in_target}')
 
     target_time = safety_info.next_check_in_target
 

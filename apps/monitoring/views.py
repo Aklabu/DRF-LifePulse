@@ -93,9 +93,36 @@ class MonitoringStatusView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        log, _ = get_or_create_current_cycle_log(request.user)
+        log, _ = get_or_create_current_cycle_log(request.user, auto_reactivate=False)
 
         if log is None:
+            # Check if monitoring is deactivated (vs no safety info at all)
+            safety_info = getattr(request.user, 'safety_info', None)
+            if safety_info and not safety_info.is_monitoring_active:
+                # Return the last overdue/notified log so the client can display context
+                last_log = MonitoringLog.objects.filter(
+                    user=request.user,
+                    status=MonitoringLog.STATUS_OVERDUE,
+                    notified=True,
+                ).order_by('-target_time').first()
+
+                if last_log:
+                    serializer = MonitoringStatusSerializer(last_log)
+                    return CustomResponse.success(
+                        message='Monitoring is deactivated after SMS escalation.',
+                        data=serializer.data,
+                    )
+
+                # Fallback: no overdue log found but monitoring is still inactive
+                return CustomResponse.success(
+                    message='Monitoring is deactivated.',
+                    data={
+                        'status': 'deactivated',
+                        'is_monitoring_active': False,
+                        'sleep_mode': False,
+                    },
+                )
+
             return CustomResponse.error(
                 message='No check-in time configured. Please set up your safety info first.',
                 status_code=400,

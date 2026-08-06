@@ -47,7 +47,7 @@ def get_or_create_current_cycle_log(user, auto_reactivate=True):
     except MonitoringLog.DoesNotExist:
         pass
 
-    deadline = target_time + timedelta(hours=1)
+    deadline = target_time + timedelta(hours=6)
 
     log, created = MonitoringLog.objects.get_or_create(
         user=user,

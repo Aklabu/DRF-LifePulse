@@ -40,7 +40,7 @@ def detect_overdue_checkins():
                 continue
 
             target_time = safety_info.next_check_in_target
-            deadline = target_time + timedelta(hours=1)
+            deadline = target_time + timedelta(hours=6)
 
             if now >= deadline:
                 log, created = MonitoringLog.objects.select_for_update(of=('self',)).get_or_create(
